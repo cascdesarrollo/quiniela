@@ -20,11 +20,10 @@ angular.module('generalServices', [])
                         url: QUINIELA + 'session/dataSession?valida='+token
                     });
                 },
-                infoTablero: function (token) {
+                tabla: function ( s) {
                     return $http({
                         method: 'GET',
-                        url: QUINIELA + 'dashboard/dashboardData?token='
-                                + token
+                        url: QUINIELA + 'quinielas/consultar?s='+s
                     });
                 }
 

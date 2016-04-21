@@ -40,7 +40,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                         }).error(function (data) {
                 });
                 $cookies.remove('csrftoken');
-                $scope.dataSes={};
+                $scope.dataSes = {};
                 $location.path("#/");
             };
 
@@ -81,10 +81,10 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                                     process.modal('hide');
                                 }
                             }).error(function (data) {
-                                console.log('no!!!');
-                                $scope.cerrarSesion();
-                                process.modal('hide');
-                        
+                        console.log('no!!!');
+                        $scope.cerrarSesion();
+                        process.modal('hide');
+
                     });
                 } else {
                     process.modal('hide');
@@ -101,8 +101,16 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
         .controller('DashBoardCtrl', function ($scope, $cookies, $window,
                 factoryGeneralService, translationService) {
             $scope.pageClass = 'page-back';
-
-
+            $scope.tablaList=[];
+            $scope.listadoPosiciones = function () {
+                factoryGeneralService.tabla('A')
+                        .success(function (data) {
+                            console.log(data);
+                            $scope.tablaList=data;
+                        }).error(function (data) {
+                });
+            };
+            $scope.listadoPosiciones();
 
             $scope.translate = function () {
                 translationService.getTranslation($scope, $scope.selectedLanguage);

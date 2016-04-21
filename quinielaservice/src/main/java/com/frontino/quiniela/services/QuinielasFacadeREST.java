@@ -8,6 +8,7 @@ package com.frontino.quiniela.services;
 import com.frontino.quiniela.entidades.MarcadorQuinielas;
 import com.frontino.quiniela.entidades.Partidos;
 import com.frontino.quiniela.entidades.Quinielas;
+import com.frontino.quiniela.entidades.Usuarios;
 import com.frontino.quiniela.logica.seguridad.Authenticator;
 import com.frontino.quiniela.logica.seguridad.SessionDto;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -76,11 +78,29 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
         return super.find(id);
     }
 
+    
     @GET
-    @Override
+    @Path("consultar")
     @Produces({"application/xml", "application/json"})
-    public List<Quinielas> findAll() {
-        return super.findAll();
+    public List<Quinielas> consultar(
+            @QueryParam("s") String _status
+    ) {
+        StringBuilder condi=new StringBuilder();
+        if(_status!=null && !_status.equals("A")){
+            condi.append(" WHERE status='").append(_status)
+                    .append("'");
+        }
+        Usuarios usuario=null;
+        Query q = em.createQuery(new StringBuffer("select p ") //
+                .append(" from Quinielas p")
+                .append(condi.toString())
+                .toString()
+        );
+        if(_status!=null && !_status.equals("A")){
+            q.setParameter(1, _status);
+        }
+        return q.getResultList();
+    
     }
 
     @GET
