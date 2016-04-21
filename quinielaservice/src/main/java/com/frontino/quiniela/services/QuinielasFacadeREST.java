@@ -37,10 +37,7 @@ import javax.ws.rs.core.Context;
 @Stateless
 @Path("quinielas")
 public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
- 
-    @Context
-    private HttpServletRequest request;
-    
+
     @EJB
     private PartidosFacadeREST partidosFacadeREST;
 
@@ -89,31 +86,30 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     @Path("nueva")
     @Produces("application/json")
     public Quinielas nuevaQuiniela(
+            @Context HttpServletRequest _request,
             @QueryParam("valida") String _token
     ) {
         Quinielas quiniela = new Quinielas();
         quiniela.setAlias("Alias de pruebas");
         quiniela.setAcumulado(0);
         Authenticator autenticador = Authenticator.getInstance();
-        
-        String sessionID2 = request.getSession().getId();
-        System.out.println("OBTENIENDO DATOS " + sessionID2);
-        
-        String sessionID = "1234567890";
-        
+        String sessionID = _request.getSession().getId();
         try {
-            SessionDto usuario = autenticador.getSession(sessionID, _token);
-            List<Partidos> arrPartidos = partidosFacadeREST.findAll();
-            List<MarcadorQuinielas> arr = new ArrayList<>();
-            MarcadorQuinielas marca;
-            for (Partidos partido : arrPartidos) {
-                marca = new MarcadorQuinielas();
-                marca.setIdPartido(partido);
-                marca.setGolEquipo1(0);
-                marca.setGolEquipo2(0);
-                arr.add(marca);
+            if (autenticador.isAuthTokenValid(sessionID, _token)) {
+                //SessionDto usuario = autenticador.getSession(sessionID, _token);
+                List<Partidos> arrPartidos = partidosFacadeREST.findAll();
+                List<MarcadorQuinielas> arr = new ArrayList<>();
+                MarcadorQuinielas marca;
+                for (Partidos partido : arrPartidos) {
+                    marca = new MarcadorQuinielas();
+                    marca.setIdPartido(partido);
+                    marca.setGolEquipo1(0);
+                    marca.setGolEquipo2(0);
+                    arr.add(marca);
+                }
+                quiniela.setMarcadorQuinielasCollection(arr);
             }
-            quiniela.setMarcadorQuinielasCollection(arr);
+
         } catch (Exception ex) {
             Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,24 +120,24 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     @Path("nuevadetalle")
     @Produces("application/json")
     public List<MarcadorQuinielas> nuevaQuinielaDetalle(
+            @Context HttpServletRequest _request,
             @QueryParam("valida") String _token
     ) {
         List<MarcadorQuinielas> arr = new ArrayList<>();
         Authenticator autenticador = Authenticator.getInstance();
-        //String sessionID = request.getSession().getId();
-        String sessionID = "1234567890";
-        System.out.println("OBTENIENDO DATOS " + sessionID);
+        String sessionID = _request.getSession().getId();
         try {
-            SessionDto usuario = autenticador.getSession(sessionID, _token);
-            List<Partidos> arrPartidos = partidosFacadeREST.findAll();
-
-            MarcadorQuinielas marca;
-            for (Partidos partido : arrPartidos) {
-                marca = new MarcadorQuinielas();
-                marca.setIdPartido(partido);
-                marca.setGolEquipo1(0);
-                marca.setGolEquipo2(0);
-                arr.add(marca);
+            if (autenticador.isAuthTokenValid(sessionID, _token)) {
+                SessionDto usuario = autenticador.getSession(sessionID, _token);
+                List<Partidos> arrPartidos = partidosFacadeREST.findAll();
+                MarcadorQuinielas marca;
+                for (Partidos partido : arrPartidos) {
+                    marca = new MarcadorQuinielas();
+                    marca.setIdPartido(partido);
+                    marca.setGolEquipo1(0);
+                    marca.setGolEquipo2(0);
+                    arr.add(marca);
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
