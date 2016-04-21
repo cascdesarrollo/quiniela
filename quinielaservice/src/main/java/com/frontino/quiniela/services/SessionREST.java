@@ -48,8 +48,8 @@ public class SessionREST {
     
     private static final long serialVersionUID = -6663599014192066936L;
 
-    @Context
-    private HttpServletRequest request;
+    /*@Context
+    private HttpServletRequest request;*/
 
     /**
      * Creates a new instance of SessionREST
@@ -62,13 +62,13 @@ public class SessionREST {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response login(
+            @Context HttpServletRequest _request,
             @FormParam("username") String username,
             @FormParam("password") String password
     ) {
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID2 = request.getSession().getId();
-        System.out.println("OBTENIENDO DATOS " + sessionID2);
-        String sessionID = "1234567890";
+        String sessionID = _request.getSession().getId();
+        System.out.println("OBTENIENDO DATOS " + sessionID);
         try {
             Usuarios usuario = usuariosFacadeREST.consultarUsuario(username, stringToMd5(password));
             String authToken = autenticador.login(sessionID, usuario);
@@ -119,11 +119,11 @@ public class SessionREST {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response logout(
+            @Context HttpServletRequest _request,
             @FormParam("valida") String _token) {
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID2 = request.getSession().getId();
-        System.out.println("CERRANDO DATOS " + sessionID2);
-        String sessionID = "1234567890";
+        String sessionID = _request.getSession().getId();
+        System.out.println("CERRANDO DATOS " + sessionID);
         try {
             autenticador.logout(sessionID, _token);
         } catch (GeneralSecurityException ex) {
@@ -142,12 +142,12 @@ public class SessionREST {
     @Produces("application/json")
     @Consumes("application/json")
     public Response datosSession(
+            @Context HttpServletRequest _request,
             @QueryParam("valida") String _token
     ) {
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID2 = request.getSession().getId();
-        System.out.println("OBTENIENDO DATOS " + sessionID2);
-        String sessionID = "1234567890";
+        String sessionID = _request.getSession().getId();
+        System.out.println("OBTENIENDO DATOS " + sessionID);
         try {
             SessionDto usuario = autenticador.getSession(sessionID, _token);
             if (usuario != null) {
