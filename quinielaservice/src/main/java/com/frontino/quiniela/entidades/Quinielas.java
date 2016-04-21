@@ -7,6 +7,7 @@ package com.frontino.quiniela.entidades;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -48,6 +51,12 @@ public class Quinielas implements Serializable {
     private String alias;
     @Column(name = "acumulado")
     private Integer acumulado;
+    @Column(name = "status")
+    private String status;
+    @Column(name = "fecharegistro")
+    @Temporal(TemporalType.DATE)
+    private Date fecharegistro;
+    
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuarios idUsuario;
@@ -85,6 +94,24 @@ public class Quinielas implements Serializable {
         this.acumulado = acumulado;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getFecharegistro() {
+        return fecharegistro;
+    }
+
+    public void setFecharegistro(Date fecharegistro) {
+        this.fecharegistro = fecharegistro;
+    }
+
+    
+    
     public Usuarios getIdUsuario() {
         return idUsuario;
     }

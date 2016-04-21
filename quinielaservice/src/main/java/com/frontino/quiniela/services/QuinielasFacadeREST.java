@@ -11,6 +11,7 @@ import com.frontino.quiniela.entidades.Quinielas;
 import com.frontino.quiniela.logica.seguridad.Authenticator;
 import com.frontino.quiniela.logica.seguridad.SessionDto;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,40 +84,6 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     }
 
     @GET
-    @Path("nueva")
-    @Produces("application/json")
-    public Quinielas nuevaQuiniela(
-            @Context HttpServletRequest _request,
-            @QueryParam("valida") String _token
-    ) {
-        Quinielas quiniela = new Quinielas();
-        quiniela.setAlias("Alias de pruebas");
-        quiniela.setAcumulado(0);
-        Authenticator autenticador = Authenticator.getInstance();
-        String sessionID = _request.getSession().getId();
-        try {
-            if (autenticador.isAuthTokenValid(sessionID, _token)) {
-                //SessionDto usuario = autenticador.getSession(sessionID, _token);
-                List<Partidos> arrPartidos = partidosFacadeREST.findAll();
-                List<MarcadorQuinielas> arr = new ArrayList<>();
-                MarcadorQuinielas marca;
-                for (Partidos partido : arrPartidos) {
-                    marca = new MarcadorQuinielas();
-                    marca.setIdPartido(partido);
-                    marca.setGolEquipo1(0);
-                    marca.setGolEquipo2(0);
-                    arr.add(marca);
-                }
-                quiniela.setMarcadorQuinielasCollection(arr);
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return quiniela;
-    }
-
-    @GET
     @Path("nuevadetalle")
     @Produces("application/json")
     public List<MarcadorQuinielas> nuevaQuinielaDetalle(
@@ -143,6 +110,39 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
             Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    @POST
+    @Path("registrar")
+    @Consumes("application/json")
+    public void registrarQuiniela(
+            @Context HttpServletRequest _request,
+            @QueryParam("valida") String _token,
+            @QueryParam("alias") String _alias,
+            List<MarcadorQuinielas> _detalle
+    ) {
+        Authenticator autenticador = Authenticator.getInstance();
+        String sessionID = _request.getSession().getId();
+        try {
+            if (autenticador.isAuthTokenValid(sessionID, _token)) {
+                SessionDto usuario = autenticador.getSession(sessionID, _token);
+                Quinielas quiniela = new Quinielas();
+                quiniela.setAlias(_alias);
+                quiniela.setAcumulado(0);
+                quiniela.setStatus("P");
+                quiniela.setFecharegistro(new Date());
+                quiniela.setIdUsuario(usuario.getUsuario());
+                for (MarcadorQuinielas linea : _detalle) {
+                    linea.setIdQuiniela(quiniela);
+                    linea.setPuntos(0);
+                    linea.setAcumulado(0);
+                }
+                quiniela.setMarcadorQuinielasCollection(_detalle);
+                super.create(quiniela);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
