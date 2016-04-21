@@ -74,12 +74,13 @@
                                                 <td>{{item.idPartido.idEquipo1.equipo}}</td>
                                                 <td>
                                                     <input class="form-control col-xs-3" type="number"
-                                                           min="0" step="1"
+                                                           min="0" max="8" step="1"
                                                            ng-model="item.golEquipo1"/>
                                                 </td>
                                                 <td>{{item.idPartido.idEquipo2.equipo}}</td>
                                                 <td>
                                                     <input class="form-control col-xs-3" type="number"
+                                                           min="0" max="8" step="1"
                                                            ng-model="item.golEquipo2"/>
                                                 </td>
                                             </tr>
@@ -90,10 +91,12 @@
                                 <!-- /.table-responsive -->
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button ng-click="save()" ng-disabled="myForm.$invalid"
+                                        <button ng-click="guardar()" ng-disabled="myForm.$invalid"
                                                 class="btn btn-primary">Guardar
                                         </button>
-                                        <a href="#/" class="btn btn-default">Cancelar</a>
+                                        <button ng-click="regresar()" 
+                                                class="btn btn-default">Cancelar
+                                        </button>
                                     </div>
                                 </div>
                             </div>

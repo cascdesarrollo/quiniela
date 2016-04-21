@@ -25,7 +25,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                 });
                 $routeProvider.otherwise({redirectTo: '/'});
             }])
-        .controller('MainCtrl', function ($scope, $cookies, $window,
+        .controller('MainCtrl', function ($scope, $cookies, $window, $location,
                 factoryGeneralService, translationService
                 ) {
 
@@ -41,6 +41,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                 });
                 $cookies.remove('csrftoken');
                 $scope.dataSes={};
+                $location.path("#/");
             };
 
             var process = $(

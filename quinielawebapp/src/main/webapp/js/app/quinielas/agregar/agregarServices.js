@@ -4,7 +4,15 @@ angular.module('agregarServices', [])
                 partidos: function (token) {
                     return $http({
                         method: 'GET',
-                        url: QUINIELA + 'quinielas/nuevadetalle?valida='+token
+                        url: QUINIELA + 'quinielas/nuevadetalle?valida=' + token
+                    });
+                },
+                guardar: function (token, alias, datos) {
+                    return $http({
+                        method: 'POST',
+                        url: QUINIELA + 'quinielas/registrar?valida=' + token + "&alias=" + alias,
+                        dataType: "json",
+                        data: datos
                     });
                 }
             };

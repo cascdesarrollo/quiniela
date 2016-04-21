@@ -17,7 +17,7 @@ angular.module('quiniela.agregar', ['ngRoute', 'ngResource', 'ngCookies', 'agreg
                     + '<h4 class="modal-title" id="myModalLabel">Procesando</h4>'
                     + '</div>'
                     + '<div class="modal-body">'
-                    + 'Verificando Credenciales'
+                    + 'Registrando Datos'
                     + '<div class="progress">'
                     + '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 100%">'
                     + '<span class="sr-only">10% Complete</span>'
@@ -54,6 +54,34 @@ angular.module('quiniela.agregar', ['ngRoute', 'ngResource', 'ngCookies', 'agreg
             };
             $scope.consultarDatos();
 
+
+            
+            $scope.guardar = function () {
+                $scope.process.modal('show');
+                $scope.mensajeError = null;
+                $scope.muestraMensajeError = false;
+                factoryAgregarService.guardar($cookies.get('csrftoken'), $scope.alias, $scope.objetosList)
+                        .success(function (data) {
+                            $scope.process.modal('hide');
+                            alert("Quiniela Registrada Exitosamente ");
+                            //Ojo luego pasar a listado de quinielas personal
+                            $window.location.href = 'index.html';
+                        }).error(function (data) {
+                    $scope.process.modal('hide');
+                    if (data) {
+                        $scope.muestraMensajeError = data.error;
+                        $scope.mensajeError = data.des_error;
+                    } else {
+                        $scope.muestraMensajeError = true;
+                        $scope.mensajeError = "Error Consultando BackEnd";
+                    }
+                });
+            };
+            
+            $scope.regresar = function(){
+                $window.location.href = 'index.html';
+            };
+            
             $scope.translate = function () {
                 translationService.getTranslation($scope, $scope.selectedLanguage);
             };
