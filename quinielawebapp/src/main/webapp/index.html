@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html ng-app="quiniela">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="favicon.ico">
+
+        <title>SUPER QUINIELA FRONTINO</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <link href="css/jquery/jquery-ui.min.css" rel="stylesheet">
+
+        <!-- MetisMenu CSS -->
+        <link href="css/metisMenu/metisMenu.min.css" rel="stylesheet">
+        <!-- Timeline CSS -->
+        <link href="css/sbAdmin/timeline.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="css/sbAdmin/sb-admin-2.css" rel="stylesheet">
+        <!-- Morris Charts CSS -->
+        <link href="css/morris/morris.css" rel="stylesheet">
+        <!-- Custom Fonts -->
+        <link href="css/fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <link href="css/transiciones.css" rel="stylesheet">
+
+        <!-- jQuery -->
+        <script src="js/jquery/jquery.min.js"></script>
+        <script src="js/jquery/jquery-ui.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap/bootstrap.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="js/metisMenu/metisMenu.min.js"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="js/sbAdmin/sb-admin-2.js"></script>
+        <script src="js/angular/angular.min.js"></script>
+        <script src="js/angular/angular-route.js"></script>
+        <script src="js/angular/angular-resource.js"></script>
+        <script src="js/angular/angular-cookies.js"></script>
+        <script src="js/angular/angular-animate.js"></script>
+        <script src="js/angular/angular-touch.js"></script>
+        <script src="js/angular/ui-bootstrap-tpls-1.2.4.min.js"></script>
+        <script src="js/app/app.js"></script>
+        <script src="js/app/generalServices.js"></script>
+        <script src="js/app/app.js"></script>
+        <script src="js/app/seguridad/registro/registroController.js"></script>
+        <script src="js/app/seguridad/registro/registroServices.js"></script>
+        <script src="js/app/seguridad/login/loginController.js"></script>
+        <script src="js/app/seguridad/login/loginServices.js"></script>
+        <script src="js/app/quinielas/agregar/agregarController.js"></script>
+        <script src="js/app/quinielas/agregar/agregarServices.js"></script>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+        <script>
+        </script>
+    </head>
+
+    <body>
+
+
+        <div id="wrapper">
+
+            <div ng-controller="MainCtrl">
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="http://www.frontinosoft.com" style="padding: 0px !important;">
+                            <img  ng-src="images/pata.png" height="50px" width="50px"
+                                                             alt="Description" />
+                            </a>
+                        <a class="navbar-brand" href="#/">
+                            {{translation.appNameFull}}
+                        </a>
+                    </div>
+                    <!-- /.navbar-header -->
+
+                    <ul class="nav navbar-top-links navbar-right">
+                        <!-- /.dropdown -->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" >
+                                <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#/perfil"><i class="fa fa-user fa-fw"></i>{{translation.userProfile}}
+                                        <br>
+                                        <strong>{{dataSes.nomTer}}</strong>
+                                    </a>
+                                   
+                                </li>
+                                <li class="divider"></li>
+                                <li><a ng-click="cerrarSesion()"><i class="fa fa-sign-in fa-fw"></i> {{translation.login}}</a>
+                                </li>
+                                <li><a ng-click="cerrarSesion()"><i class="fa fa-sign-out fa-fw"></i> {{translation.logout}}</a>
+                                </li>
+                            </ul>
+                            <!-- /.dropdown-user -->
+                        </li>
+                        <!-- /.dropdown -->
+                    </ul>
+                    <!-- /.navbar-top-links -->
+
+                    <div class="navbar-default sidebar" role="navigation">
+                        <div class="sidebar-nav navbar-collapse">
+                            <ul class="nav" id="side-menu">
+                                <li ng-show="dataSes.email">
+                                    <br>
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                        <i class="fa fa-user fa-fw"></i> 
+                                        {{dataSes.nombre}}
+                                        <br>
+                                        E-mail: {{dataSes.email}}
+                                        </div>
+                                    </div>
+                                    
+                                </li>
+                                <li>
+                                    <a href="#/"><i class="fa fa-dashboard fa-fw"></i> {{translation.dashboard}}</a>
+                                </li>
+                                <li ng-show="dataSes.email">
+                                    <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Quinielas <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level">
+                                        <li>
+                                            <a href="#/agregar">Registrar Nueva Quiniela</a>
+                                        </li>
+                                        <li>
+                                            <a href="#/seguimiento">Mis Quinielas</a>
+                                        </li>
+                                    </ul>
+                                    <!-- /.nav-second-level -->
+                                </li>
+                                
+                                
+
+                                <li>
+                                    <a ><i class="fa fa-user fa-fw"></i> Usuario<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level">
+                                        <li ng-show="dataSes.email">
+                                            <a href="#/perfil">Perfil</a>
+                                        </li>
+                                        <li ng-show="!dataSes.email">
+                                            <a href="#/login">Iniciar Session</a>
+                                        </li>
+                                        <li ng-show="!dataSes.email">
+                                            <a href="#/registro">Registrarse</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="cerrarSesion()">Cerrar Session</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <a href="http://www.frontinosoft.com" target="blank"><i class="fa fa-info fa-fw"></i> Acerca de Portal Frontino</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.sidebar-collapse -->
+                    </div>
+                    <!-- /.navbar-static-side -->
+                </nav>
+
+            </div>
+            <div class="page {{ pageClass}}" ng-view>
+
+            </div>
+            <!-- /#page-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+    </body>
+
+</html>

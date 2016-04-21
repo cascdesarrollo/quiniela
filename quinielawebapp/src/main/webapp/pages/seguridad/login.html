@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quiniela</title>
+        <style>
+            .full button span {
+                background-color: limegreen;
+                border-radius: 32px;
+                color: black;
+            }
+            .partially button span {
+                background-color: orange;
+                border-radius: 32px;
+                color: black;
+            }
+        </style>
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-4 col-md-offset-4">
+
+                        <div style="margin-top: 50px;">
+                            <div class="text-center">
+                                <a href="http://www.frontinosoft.com" target="blank"><img src="images/pata.png"/></a>
+                                <br>
+                                {{translation.appNameFull}}
+                            </div>
+                        </div>
+                        <div class="login-panel panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">{{translation.welcome}}</h3>
+
+                            </div>
+                            <div class="panel-body">
+                                <div class="alert alert-danger" role="alert" ng-show="muestraMensajeError">
+                                    {{mensajeError}}
+                                </div>
+                                <form name="myForm" role="form" validate>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <input ng-show="!empresasList.length" class="form-control" placeholder="{{translation.email}}" name="email" type="email" 
+                                                   ng-model="email" required="true"
+                                                   data-error="Bruh, that email address is invalid"
+                                                   autofocus>
+                                            <label ng-show="empresasList.length">
+                                                Usuario : 
+                                                {{email}}
+                                            </label>
+                                        </div>
+                                        <div class="form-group" ng-show="!empresasList.length">
+                                            <input class="form-control" placeholder="{{translation.password}}" name="password" type="password" value=""
+                                                   ng-model="password" required="true">
+                                        </div>
+                                        <div class="form-group" ng-show="empresasList.length">
+                                            <select ng-model="empresa"
+                                                    ng-options="item.nomEmp for item in empresasList track by item.nomEmp"
+                                                    class="form-control">
+
+                                            </select>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="remember" type="checkbox" value="Remember Me">{{translation.remember}}
+                                            </label>
+                                        </div>
+                                        <!-- Change this to a button or input when using this as a form -->
+
+
+                                        <button ng-click="validateUser()" ng-disabled="myForm.$invalid || consultando"
+                                                ng-show="!empresasList.length"
+                                                class="btn btn-lg btn-success btn-block">{{translation.login}}
+                                        </button>
+
+                                        <button ng-click="ingresar()" ng-disabled="myForm.$invalid"
+                                                ng-show="empresasList.length"
+                                                class="btn btn-lg btn-success btn-block">Ingresar
+                                        </button>
+                                        <button ng-click="cancelar()"
+                                                ng-show="empresasList.length"
+                                                class="btn btn-lg btn-default btn-block">Cancelar
+                                        </button>
+
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+    </body>
+
+</html>
