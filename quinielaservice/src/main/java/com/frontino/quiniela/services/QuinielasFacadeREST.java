@@ -18,6 +18,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -31,7 +34,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -40,6 +45,8 @@ import javax.ws.rs.core.Context;
 @Stateless
 @Path("quinielas")
 public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
+    @EJB
+    private MarcadorQuinielasFacadeREST marcadorQuinielasFacadeREST;
 
     @EJB
     private PartidosFacadeREST partidosFacadeREST;
@@ -78,29 +85,28 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
         return super.find(id);
     }
 
-    
     @GET
     @Path("consultar")
     @Produces({"application/xml", "application/json"})
     public List<Quinielas> consultar(
             @QueryParam("s") String _status
     ) {
-        StringBuilder condi=new StringBuilder();
-        if(_status!=null && !_status.equals("A")){
+        StringBuilder condi = new StringBuilder();
+        if (_status != null && !_status.equals("A")) {
             condi.append(" WHERE status='").append(_status)
                     .append("'");
         }
-        Usuarios usuario=null;
+        Usuarios usuario = null;
         Query q = em.createQuery(new StringBuffer("select p ") //
                 .append(" from Quinielas p")
                 .append(condi.toString())
+                .append(" ORDER BY p.acumulado DESC, p.alias")
                 .toString()
         );
-        if(_status!=null && !_status.equals("A")){
+        if (_status != null && !_status.equals("A")) {
             q.setParameter(1, _status);
         }
         return q.getResultList();
-    
     }
 
     @GET
@@ -168,6 +174,63 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    @GET
+    @Path("validaalias")
+    @Produces("application/json")
+    public Response validaAlias(
+            @Context HttpServletRequest _request,
+            @QueryParam("valida") String _token,
+            @QueryParam("alias") String _alias
+    ) {
+        Authenticator autenticador = Authenticator.getInstance();
+        String sessionID = _request.getSession().getId();
+        try {
+            if (autenticador.isAuthTokenValid(sessionID, _token)) {
+                Query q = em.createQuery(new StringBuffer("select p ") //
+                        .append(" from Quinielas p") //
+                        .append(" where p.alias=?1").toString());
+                q.setParameter(1, _alias);
+                if (q.getResultList().size() > 0) {
+                    JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+                    jsonObjBuilder.add("error", true);
+                    jsonObjBuilder.add("des_error", "Ya existe una quiniela registrada bajo este nombre " + _alias);
+                    JsonObject jsonObj = jsonObjBuilder.build();
+                    return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+                }
+            }
+        } catch (Exception ex) {
+            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+            jsonObjBuilder.add("error", true);
+            jsonObjBuilder.add("des_error", "Error Validando Alias " + ex.getMessage());
+            JsonObject jsonObj = jsonObjBuilder.build();
+            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+        }
+        //autenticador.logout(null, null);
+        JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+        jsonObjBuilder.add("message", "Executed demoPostMethod");
+        JsonObject jsonObj = jsonObjBuilder.build();
+
+        return getNoCacheResponseBuilder(Response.Status.ACCEPTED).entity(jsonObj.toString()).build();
+    }
+
+    private Response.ResponseBuilder getNoCacheResponseBuilder(Response.Status status) {
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+        cc.setMaxAge(-1);
+        cc.setMustRevalidate(true);
+        return Response.status(status).cacheControl(cc);
+    }
+    
+    @GET
+    @Path("detallequiniela")
+    @Produces("application/json")
+    public List<MarcadorQuinielas> consultarDetalleQuiniela(
+            @Context HttpServletRequest _request,
+            @QueryParam("id") int _id
+    ) {
+        return marcadorQuinielasFacadeREST.consultarDetalle(_id);
     }
 
 }

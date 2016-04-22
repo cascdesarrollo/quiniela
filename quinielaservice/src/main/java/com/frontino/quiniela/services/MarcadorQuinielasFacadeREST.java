@@ -8,8 +8,12 @@ package com.frontino.quiniela.services;
 import com.frontino.quiniela.entidades.MarcadorQuinielas;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +22,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -26,6 +32,7 @@ import javax.ws.rs.Produces;
 @Stateless
 @Path("com.frontino.quiniela.entidades.marcadorquinielas")
 public class MarcadorQuinielasFacadeREST extends AbstractFacade<MarcadorQuinielas> {
+
     @PersistenceContext(unitName = "com.frontino_quinielaservice_war_1.0PU")
     private EntityManager em;
 
@@ -61,10 +68,16 @@ public class MarcadorQuinielasFacadeREST extends AbstractFacade<MarcadorQuiniela
     }
 
     @GET
-    @Override
     @Produces({"application/xml", "application/json"})
-    public List<MarcadorQuinielas> findAll() {
-        return super.findAll();
+    public List<MarcadorQuinielas> consultarDetalle(
+             @QueryParam("id") int _id) {
+        Query q = em.createQuery(new StringBuffer("select p ") //
+                .append(" from MarcadorQuinielas p") //
+                .append(" where p.idQuiniela.id=?1")
+                .append(" ORDER by p.idPartido.fecha, p.idPartido.idGrupo.id")
+                .toString());
+        q.setParameter(1, _id);
+        return q.getResultList();
     }
 
     @GET
@@ -85,5 +98,5 @@ public class MarcadorQuinielasFacadeREST extends AbstractFacade<MarcadorQuiniela
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

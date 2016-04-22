@@ -3,13 +3,18 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
     'generalServices',
     'quiniela.registro',
     'quiniela.login',
-    'quiniela.agregar'
+    'quiniela.agregar',
+    'quiniela.quinielas'
 
 ])
         .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider.when('/', {
                     templateUrl: 'dashboard.html',
                     controller: 'DashBoardCtrl'
+                });
+                $routeProvider.when('/:id/:alias', {
+                    templateUrl: 'pages/quinielas/detalle.html',
+                    controller: 'QuinielasCtrl'
                 });
                 $routeProvider.when('/registro', {
                     templateUrl: 'pages/seguridad/registro.html',
@@ -28,10 +33,6 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
         .controller('MainCtrl', function ($scope, $cookies, $window, $location,
                 factoryGeneralService, translationService
                 ) {
-
-            $scope.pageClass = 'page-back';
-
-
             $scope.cerrarSesion = function () {
                 factoryGeneralService.salir(
                         $cookies.get('csrftoken')
@@ -69,19 +70,15 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
             $scope.dataSes = {};
             $scope.validaSesion = function () {
                 if ($cookies.get('csrftoken')) {
-                    console.log('hay corazon');
                     factoryGeneralService.datos($cookies.get('csrftoken'))
                             .success(function (data) {
-                                console.log('siii');
                                 if (data) {
                                     process.modal('hide');
                                     $scope.dataSes = data;
-                                    console.log($scope.dataSes);
                                 } else {
                                     process.modal('hide');
                                 }
                             }).error(function (data) {
-                        console.log('no!!!');
                         $scope.cerrarSesion();
                         process.modal('hide');
 
@@ -100,12 +97,10 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
         })
         .controller('DashBoardCtrl', function ($scope, $cookies, $window,
                 factoryGeneralService, translationService) {
-            $scope.pageClass = 'page-back';
             $scope.tablaList=[];
             $scope.listadoPosiciones = function () {
                 factoryGeneralService.tabla('A')
                         .success(function (data) {
-                            console.log(data);
                             $scope.tablaList=data;
                         }).error(function (data) {
                 });

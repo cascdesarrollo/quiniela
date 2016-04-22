@@ -32,6 +32,9 @@
                             <div class="clearfix"></div>
 
                         </h1>
+                        <div class="alert alert-danger" role="alert" ng-show="muestraMensajeError">
+                            {{ mensajeError}}
+                        </div>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -91,6 +94,9 @@
                                 <!-- /.table-responsive -->
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="alert alert-danger" role="alert" ng-show="muestraMensajeError">
+                                            {{ mensajeError}}
+                                        </div>
                                         <button ng-click="guardar()" ng-disabled="myForm.$invalid"
                                                 class="btn btn-primary">Guardar
                                         </button>

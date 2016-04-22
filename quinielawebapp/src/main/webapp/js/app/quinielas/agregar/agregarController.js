@@ -55,33 +55,44 @@ angular.module('quiniela.agregar', ['ngRoute', 'ngResource', 'ngCookies', 'agreg
             $scope.consultarDatos();
 
 
-            
+
             $scope.guardar = function () {
                 $scope.process.modal('show');
                 $scope.mensajeError = null;
                 $scope.muestraMensajeError = false;
-                factoryAgregarService.guardar($cookies.get('csrftoken'), $scope.alias, $scope.objetosList)
+
+                factoryAgregarService.validaalias($cookies.get('csrftoken'), $scope.alias)
                         .success(function (data) {
-                            $scope.process.modal('hide');
-                            alert("Quiniela Registrada Exitosamente ");
-                            //Ojo luego pasar a listado de quinielas personal
-                            $window.location.href = 'index.html';
+                            factoryAgregarService.guardar($cookies.get('csrftoken'), $scope.alias, $scope.objetosList)
+                                    .success(function (data) {
+                                        $scope.process.modal('hide');
+                                        alert("Quiniela Registrada Exitosamente ");
+                                        //Ojo luego pasar a listado de quinielas personal
+                                        $window.location.href = 'index.html';
+                                    }).error(function (data) {
+                                $scope.process.modal('hide');
+                                if (data) {
+                                    $scope.muestraMensajeError = data.error;
+                                    $scope.mensajeError = data.des_error;
+                                } else {
+                                    $scope.muestraMensajeError = true;
+                                    $scope.mensajeError = "Error Consultando BackEnd";
+                                }
+                            });
                         }).error(function (data) {
-                    $scope.process.modal('hide');
-                    if (data) {
-                        $scope.muestraMensajeError = data.error;
-                        $scope.mensajeError = data.des_error;
-                    } else {
-                        $scope.muestraMensajeError = true;
-                        $scope.mensajeError = "Error Consultando BackEnd";
-                    }
+                            $scope.process.modal('hide');
+                            console.log(data);
+                    $scope.muestraMensajeError = true;
+                    $scope.mensajeError = data.des_error;
                 });
+
+
             };
-            
-            $scope.regresar = function(){
+
+            $scope.regresar = function () {
                 $window.location.href = 'index.html';
             };
-            
+
             $scope.translate = function () {
                 translationService.getTranslation($scope, $scope.selectedLanguage);
             };

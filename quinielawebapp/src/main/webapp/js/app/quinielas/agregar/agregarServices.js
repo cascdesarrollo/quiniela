@@ -7,6 +7,12 @@ angular.module('agregarServices', [])
                         url: QUINIELA + 'quinielas/nuevadetalle?valida=' + token
                     });
                 },
+                validaalias: function (token, alias) {
+                    return $http({
+                        method: 'GET',
+                        url: QUINIELA + 'quinielas/validaalias?valida=' + token + "&alias=" + alias
+                    });
+                },
                 guardar: function (token, alias, datos) {
                     return $http({
                         method: 'POST',

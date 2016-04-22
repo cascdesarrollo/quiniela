@@ -6,6 +6,7 @@
 package com.frontino.quiniela.services;
 
 import com.frontino.quiniela.entidades.Usuarios;
+import com.frontino.quiniela.logica.Utilidades;
 import com.frontino.quiniela.logica.seguridad.Authenticator;
 import com.frontino.quiniela.logica.seguridad.SessionDto;
 import java.security.GeneralSecurityException;
@@ -70,7 +71,7 @@ public class SessionREST {
         String sessionID = _request.getSession().getId();
         System.out.println("OBTENIENDO DATOS " + sessionID);
         try {
-            Usuarios usuario = usuariosFacadeREST.consultarUsuario(username, stringToMd5(password));
+            Usuarios usuario = usuariosFacadeREST.consultarUsuario(username,Utilidades.stringToMd5(password));
             String authToken = autenticador.login(sessionID, usuario);
             if (authToken == null) {
                 JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
@@ -180,31 +181,6 @@ public class SessionREST {
         return em;
     }
     
-        /**
-     * Convertir cadena en MD5
-     *
-     * @param _cadena
-     * @return
-     */
-    private String stringToMd5(String _cadena) {
-        String password = _cadena;
-        StringBuilder sb = new StringBuilder();
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("MD5");
 
-            md.update(password.getBytes());
-
-            byte byteData[] = md.digest();
-
-            //convert the byte to hex format method 1
-            for (int i = 0; i < byteData.length; i++) {
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-            }
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Authenticator.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return sb.toString();
-    }
 
 }

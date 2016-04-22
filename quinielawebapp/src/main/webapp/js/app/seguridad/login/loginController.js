@@ -3,15 +3,12 @@ angular.module('quiniela.login', ['ngRoute', 'ngResource', 'ngCookies', 'loginSe
             if ($cookies.get('csrftoken')) {
                 $window.location.href = 'index.html';
             }
-            $scope.empresasList = {};
-            $scope.empresa = null;
             $scope.consultando = false;
             $scope.auth_token = null;
             $scope.mensajeError = null;
             $scope.muestraMensajeError = false;
             $scope.validateUser = function () {
                 $scope.process.modal('show');
-                $scope.consultando = true;
                 $scope.mensajeError = null;
                 $scope.muestraMensajeError = false;
                 factoryLoginService.validar($scope.email, $scope.password)
@@ -20,14 +17,11 @@ angular.module('quiniela.login', ['ngRoute', 'ngResource', 'ngCookies', 'loginSe
                             console.log(data);
                             $scope.auth_token = data.auth_token;
                             $cookies.put('csrftoken', data.auth_token);
-                            $scope.consultando = false;
-                            
                             $window.location.href = 'index.html';
                             //$location.path("#/");
                             
                         }).error(function (data) {
                     $scope.process.modal('hide');
-                    $scope.consultando = false;
                     if (data) {
                         $scope.muestraMensajeError = data.error;
                         $scope.mensajeError = data.des_error;
