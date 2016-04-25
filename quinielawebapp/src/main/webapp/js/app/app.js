@@ -1,4 +1,5 @@
 angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
+    'chat',
     'ngAnimate',
     'generalServices',
     'quiniela.registro',
@@ -7,6 +8,15 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
     'quiniela.quinielas'
 
 ])
+        .constant('config', {
+            //
+            // Get your PubNub API Keys in link below phone demo.
+            //
+            "pubnub": {
+                "publish-key": "pub-c-b03f67aa-8528-4bef-8789-5cb81800898a",
+                "subscribe-key": "sub-c-a8bf11fe-0b03-11e6-a6c8-0619f8945a4f"
+            }
+        })
         .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider.when('/', {
                     templateUrl: 'dashboard.html',
@@ -40,6 +50,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                         .success(function (data) {
                         }).error(function (data) {
                 });
+                USUARIO = '';
                 $cookies.remove('csrftoken');
                 $scope.dataSes = {};
                 $location.path("#/");
@@ -75,6 +86,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                                 if (data) {
                                     process.modal('hide');
                                     $scope.dataSes = data;
+                                    USUARIO = data.nombre;
                                 } else {
                                     process.modal('hide');
                                 }
@@ -84,6 +96,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
 
                     });
                 } else {
+                    USUARIO = '';
                     process.modal('hide');
                 }
             };
@@ -95,25 +108,58 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
             $scope.selectedLanguage = IDIOMA;
             $scope.translate();
         })
-        .controller('DashBoardCtrl', function ($scope, $cookies, $window,
-                factoryGeneralService, translationService) {
-            $scope.tablaList=[];
-            $scope.listadoPosiciones = function () {
-                factoryGeneralService.tabla('A')
-                        .success(function (data) {
-                            $scope.tablaList=data;
-                        }).error(function (data) {
-                });
-            };
-            $scope.listadoPosiciones();
+        .controller('DashBoardCtrl',
+                ['Messages', '$scope', 'factoryGeneralService', 'translationService',
+                    function (Messages, $scope,
+                            factoryGeneralService, translationService) {
+                        $scope.tablaList = [];
+                        $scope.listadoPosiciones = function () {
+                            factoryGeneralService.tabla('A')
+                                    .success(function (data) {
+                                        $scope.tablaList = data;
+                                    }).error(function (data) {
+                            });
+                        };
+                        $scope.listadoPosiciones();
 
-            $scope.translate = function () {
-                translationService.getTranslation($scope, $scope.selectedLanguage);
-            };
-            $scope.selectedLanguage = IDIOMA;
-            $scope.translate();
 
-        });
+                        $scope.logeado=false;
+                        if (USUARIO && USUARIO !== '') {
+                            $scope.logeado=true;
+                            $scope.usuario = {id: uuid(), name: 'Carlitos'};
+                            Messages.user($scope.usuario);
+                        }
+
+                        // Message Inbox
+                        $scope.messages = [];
+
+                        // Receive Messages
+                        Messages.receive(function (message) {
+                            $scope.messages.push(message);
+                        });
+
+                        // Send Messages
+                        $scope.send = function () {
+                            if ($scope.textbox !== '') {
+                                Messages.send({data: $scope.textbox});
+                                $scope.textbox = '';
+                            }
+                        };
+
+                        $scope.translate = function () {
+                            translationService.getTranslation($scope, $scope.selectedLanguage);
+                        };
+                        $scope.selectedLanguage = IDIOMA;
+                        $scope.translate();
+
+                    }]);
 var IDIOMA = 'es';
 var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
-        
+var USUARIO = '';
+function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+            function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+}
