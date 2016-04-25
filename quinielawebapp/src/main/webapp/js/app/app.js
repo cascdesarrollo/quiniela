@@ -50,7 +50,6 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                         .success(function (data) {
                         }).error(function (data) {
                 });
-                USUARIO = '';
                 $cookies.remove('csrftoken');
                 $scope.dataSes = {};
                 $location.path("#/");
@@ -115,11 +114,11 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                             factoryGeneralService.tabla('A')
                                     .success(function (data) {
                                         $scope.tablaList = data;
+                                        console.log($scope.tablaList);
                                     }).error(function (data) {
                             });
                         };
                         $scope.listadoPosiciones();
-
                         $scope.logeado = false;
                         $scope.dataSes = {};
                         $scope.validaSesion = function () {
@@ -136,35 +135,43 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                             }
                         };
                         $scope.validaSesion();
-
-
                         // Message Inbox
                         $scope.messages = [];
-
                         // Receive Messages
                         Messages.receive(function (message) {
                             $scope.messages.push(message);
                         });
-
                         // Send Messages
                         $scope.send = function () {
                             if ($scope.textbox !== '') {
                                 Messages.send({data: $scope.textbox});
                                 $scope.textbox = '';
+                                $scope.abajo();
                             }
                         };
 
+                        $scope.checkIfEnterKeyWasPressed = function ($event) {
+                            var keyCode = $event.which || $event.keyCode;
+                            if (keyCode === 13) {
+                                $scope.send();
+                            }
+                        };
+
+                        $scope.abajo = function () {
+                            var elem = document.getElementById('scrollMensajes');
+                            elem.scrollTop = elem.scrollHeight+150;
+                        };
+                        $scope.abajo();
+                        
                         $scope.translate = function () {
                             translationService.getTranslation($scope, $scope.selectedLanguage);
                         };
                         $scope.selectedLanguage = IDIOMA;
                         $scope.translate();
-
                     }]);
 var IDIOMA = 'es';
-//var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
-var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
-var USUARIO = '';
+var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
+//var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
 function uuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
             function (c) {
