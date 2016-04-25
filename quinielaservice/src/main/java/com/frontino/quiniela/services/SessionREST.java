@@ -63,13 +63,15 @@ public class SessionREST {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response login(
-            @Context HttpServletRequest _request,
+            //@Context HttpServletRequest _request,
             @FormParam("username") String username,
             @FormParam("password") String password
     ) {
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID = _request.getSession().getId();
-        System.out.println("OBTENIENDO DATOS " + sessionID);
+        //Funciono local pero cuando separe los proyectos dejo de funcionar
+        //String sessionID = _request.getSession().getId();
+        //System.out.println("INICIANDO LA SESION" + sessionID);
+        String sessionID = username;
         try {
             Usuarios usuario = usuariosFacadeREST.consultarUsuario(username,Utilidades.stringToMd5(password));
             String authToken = autenticador.login(sessionID, usuario);
@@ -120,11 +122,14 @@ public class SessionREST {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response logout(
-            @Context HttpServletRequest _request,
+            //@Context HttpServletRequest _request,
             @FormParam("valida") String _token) {
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID = _request.getSession().getId();
-        System.out.println("CERRANDO DATOS " + sessionID);
+        //Funciono local pero cuando separe los proyectos dejo de funcionar
+        //String sessionID = _request.getSession().getId();
+        //System.out.println("CERRANDO DATOS " + sessionID);
+        String sessionID = _token.split("-")[0];
+        _token=_token.substring(sessionID.length()+1, _token.length());
         try {
             autenticador.logout(sessionID, _token);
         } catch (GeneralSecurityException ex) {
@@ -143,12 +148,15 @@ public class SessionREST {
     @Produces("application/json")
     @Consumes("application/json")
     public Response datosSession(
-            @Context HttpServletRequest _request,
+            //@Context HttpServletRequest _request,
             @QueryParam("valida") String _token
     ) {
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID = _request.getSession().getId();
-        System.out.println("OBTENIENDO DATOS " + sessionID);
+        //Funciono local pero cuando separe los proyectos dejo de funcionar
+        //String sessionID = _request.getSession().getId();
+        //System.out.println("OBTENIENDO DATOS " + sessionID);
+        String sessionID = _token.split("-")[0];
+        _token=_token.substring(sessionID.length()+1, _token.length());
         try {
             SessionDto usuario = autenticador.getSession(sessionID, _token);
             if (usuario != null) {

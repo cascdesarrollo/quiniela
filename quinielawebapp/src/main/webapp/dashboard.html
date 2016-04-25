@@ -11,11 +11,15 @@
         <!-- /.row -->
         <div class="row">
 
+            
             <div class="col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Tabla de Posiciones de Participantes
+                        <br>
+                        <input class="form-control" id="filtro" ng-model="filtro"/>
                     </div>
+
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -28,7 +32,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in tablaList">
+                                    <tr ng-repeat="item in tablaList | filter: {'alias':  filtro}">
                                         <td>{{item.alias}}</td>
                                         <td>{{item.acumulado}}</td>
                                         <td>
@@ -45,21 +49,21 @@
                 </div>
             </div>
             <div class="col-lg-4" ng-show="logeado">
-                    <div class="panel-body">
+                <div class="panel-body">
                     <ul class="chat">
                         <div ng-repeat="message in messages">
 
-                        <li class="right clearfix">
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="pull-left primary-font"> {{ message.user.name}}</strong>
+                            <li class="right clearfix">
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="pull-left primary-font"> {{ message.user.name}}</strong>
+                                    </div>
+                                    <br>
+                                    <p>
+                                        {{ message.data}}
+                                    </p>
                                 </div>
-                                <br>
-                                <p>
-                                    {{ message.data}}
-                                </p>
-                            </div>
-                        </li>
+                            </li>
                         </div>
                     </ul>
                 </div>
@@ -73,8 +77,8 @@
                     </div>
                 </div>
             </div>
-               
-               
+
+
         </div>
     </div>
 </html>

@@ -14,12 +14,12 @@ angular.module('quiniela.login', ['ngRoute', 'ngResource', 'ngCookies', 'loginSe
                 factoryLoginService.validar($scope.email, $scope.password)
                         .success(function (data) {
                             $scope.process.modal('hide');
-                            console.log(data);
                             $scope.auth_token = data.auth_token;
-                            $cookies.put('csrftoken', data.auth_token);
+                            $cookies.put('csrftoken', $scope.email + "-" + data.auth_token);
                             $window.location.href = 'index.html';
+                            USUARIO = $scope.email;
                             //$location.path("#/");
-                            
+
                         }).error(function (data) {
                     $scope.process.modal('hide');
                     if (data) {

@@ -86,7 +86,6 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                                 if (data) {
                                     process.modal('hide');
                                     $scope.dataSes = data;
-                                    USUARIO = data.nombre;
                                 } else {
                                     process.modal('hide');
                                 }
@@ -96,7 +95,6 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
 
                     });
                 } else {
-                    USUARIO = '';
                     process.modal('hide');
                 }
             };
@@ -109,8 +107,8 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
             $scope.translate();
         })
         .controller('DashBoardCtrl',
-                ['Messages', '$scope', 'factoryGeneralService', 'translationService',
-                    function (Messages, $scope,
+                ['Messages', '$scope', '$cookies', 'factoryGeneralService', 'translationService',
+                    function (Messages, $scope, $cookies,
                             factoryGeneralService, translationService) {
                         $scope.tablaList = [];
                         $scope.listadoPosiciones = function () {
@@ -122,13 +120,23 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                         };
                         $scope.listadoPosiciones();
 
+                        $scope.logeado = false;
+                        $scope.dataSes = {};
+                        $scope.validaSesion = function () {
+                            if ($cookies.get('csrftoken')) {
+                                factoryGeneralService.datos($cookies.get('csrftoken'))
+                                        .success(function (data) {
+                                            if (data) {
+                                                $scope.logeado = true;
+                                                $scope.usuario = {id: uuid(), name: data.nombre.replace(" ", "_")};
+                                                Messages.user($scope.usuario);
+                                            }
+                                        }).error(function (data) {
+                                });
+                            }
+                        };
+                        $scope.validaSesion();
 
-                        $scope.logeado=false;
-                        if (USUARIO && USUARIO !== '') {
-                            $scope.logeado=true;
-                            $scope.usuario = {id: uuid(), name: 'Carlitos'};
-                            Messages.user($scope.usuario);
-                        }
 
                         // Message Inbox
                         $scope.messages = [];
@@ -154,7 +162,8 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
 
                     }]);
 var IDIOMA = 'es';
-var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
+//var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
+var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
 var USUARIO = '';
 function uuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,

@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.frontino.quiniela.services.EquiposFacadeREST.class);
         resources.add(com.frontino.quiniela.services.GruposFacadeREST.class);
         resources.add(com.frontino.quiniela.services.MarcadorQuinielasFacadeREST.class);
+        resources.add(com.frontino.quiniela.services.NewCrossOriginResourceSharingFilter.class);
         resources.add(com.frontino.quiniela.services.PartidosFacadeREST.class);
         resources.add(com.frontino.quiniela.services.QuinielasFacadeREST.class);
         resources.add(com.frontino.quiniela.services.SessionREST.class);
