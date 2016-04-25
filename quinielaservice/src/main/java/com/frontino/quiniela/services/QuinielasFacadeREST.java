@@ -45,6 +45,7 @@ import javax.ws.rs.core.Response;
 @Stateless
 @Path("quinielas")
 public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
+
     @EJB
     private MarcadorQuinielasFacadeREST marcadorQuinielasFacadeREST;
 
@@ -103,9 +104,6 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
                 .append(" ORDER BY p.acumulado DESC, p.alias")
                 .toString()
         );
-        if (_status != null && !_status.equals("A")) {
-            q.setParameter(1, _status);
-        }
         return q.getResultList();
     }
 
@@ -118,7 +116,8 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     ) {
         List<MarcadorQuinielas> arr = new ArrayList<>();
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID = _request.getSession().getId();
+        String sessionID = _token.split("-")[0];
+        _token = _token.substring(sessionID.length() + 1, _token.length());
         try {
             if (autenticador.isAuthTokenValid(sessionID, _token)) {
                 SessionDto usuario = autenticador.getSession(sessionID, _token);
@@ -148,7 +147,8 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
             List<MarcadorQuinielas> _detalle
     ) {
         Authenticator autenticador = Authenticator.getInstance();
-        String sessionID = _request.getSession().getId();
+        String sessionID = _token.split("-")[0];
+        _token = _token.substring(sessionID.length() + 1, _token.length());
         try {
             if (autenticador.isAuthTokenValid(sessionID, _token)) {
                 SessionDto usuario = autenticador.getSession(sessionID, _token);
@@ -222,7 +222,7 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
         cc.setMustRevalidate(true);
         return Response.status(status).cacheControl(cc);
     }
-    
+
     @GET
     @Path("detallequiniela")
     @Produces("application/json")
@@ -231,6 +231,39 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
             @QueryParam("id") int _id
     ) {
         return marcadorQuinielasFacadeREST.consultarDetalle(_id);
+    }
+
+    @GET
+    @Path("quinielausuario")
+    @Produces({"application/xml", "application/json"})
+    public List<Quinielas> consultarQuinielasUsuario(
+            @QueryParam("valida") String _token
+    ) {
+        Authenticator autenticador = Authenticator.getInstance();
+        String sessionID = _token.split("-")[0];
+        _token = _token.substring(sessionID.length() + 1, _token.length());
+        try {
+            SessionDto usuario = autenticador.getSession(sessionID, _token);
+            if (usuario != null) {
+                Query q = em.createQuery(new StringBuffer("select p ") //
+                        .append(" from Quinielas p")
+                        .append(" WHERE p.idUsuario=?1")
+                        .append(" ORDER BY p.acumulado DESC, p.alias")
+                        .toString()
+                );
+                q.setParameter(1, usuario.getUsuario());
+                return q.getResultList();
+            } else {
+                System.out.println("Usuario NULL");
+                return null;
+            }
+        } catch (final Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        } finally {
+
+        }
+
     }
 
 }

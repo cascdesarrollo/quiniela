@@ -2,8 +2,8 @@ angular.module('quiniela.registro', ['ngCookies', 'registroServices'])
         .controller('RegistroCtrl', function ($scope, $window, $location, factoryRegistroService,
                 translationService, $cookies) {
 
-            if ($cookies.get('csrftoken')) {
-                $location.path("/");
+            if (!$cookies.get('csrftoken')) {
+               $window.location.href = 'index.html';
             }
 
             $scope.consultando = false;

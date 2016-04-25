@@ -6,6 +6,12 @@ angular.module('quinielasServices', [])
                         method: 'GET',
                         url: QUINIELA + 'quinielas/detallequiniela?id=' + id
                     });
+                },
+                listaQuinielas: function (token) {
+                    return $http({
+                        method: 'GET',
+                        url: QUINIELA + 'quinielas/quinielausuario?valida=' + token
+                    });
                 }
             };
         })

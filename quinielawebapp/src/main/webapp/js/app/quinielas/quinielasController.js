@@ -1,11 +1,11 @@
 angular.module('quiniela.quinielas', ['ngRoute', 'ngResource', 'ngCookies', 'quinielasServices'])
-        .controller('QuinielasCtrl', function ($scope, $routeParams, $location, factoryQuinielasService, translationService, $cookies) {
-            if(!$routeParams.id){
+        .controller('QuinielasCtrl', function ($scope, $routeParams, $location, factoryQuinielasService, translationService) {
+            if (!$routeParams.id) {
                 $location.path("/");
             }
             $scope.id = $routeParams.id;
             $scope.alias = $routeParams.alias;
-            
+
             $scope.mensajeError = null;
             $scope.muestraMensajeError = false;
 
@@ -31,28 +31,29 @@ angular.module('quiniela.quinielas', ['ngRoute', 'ngResource', 'ngCookies', 'qui
                     + '</div>'
                     + '</div>');
 
-            
-                factoryQuinielasService.detalle($scope.id)
-                        .success(function (data) {
-                            $scope.process.modal('hide');
-                            $scope.tablaList = data;
-                            console.log($scope.tablaList);
-                        }).error(function (data) {
-                    $scope.process.modal('hide');
-                    $scope.consultando = false;
-                    if (data) {
-                        $scope.muestraMensajeError = data.error;
-                        $scope.mensajeError = data.des_error;
-                    } else {
-                        $scope.muestraMensajeError = true;
-                        $scope.mensajeError = "Error Consultando BackEnd";
-                    }
-                });
 
-
+            factoryQuinielasService.detalle($scope.id)
+                    .success(function (data) {
+                        $scope.process.modal('hide');
+                        $scope.tablaList = data;
+                    }).error(function (data) {
+                $scope.process.modal('hide');
+                $scope.consultando = false;
+                if (data) {
+                    $scope.muestraMensajeError = data.error;
+                    $scope.mensajeError = data.des_error;
+                } else {
+                    $scope.muestraMensajeError = true;
+                    $scope.mensajeError = "Error Consultando BackEnd";
+                }
+            });
 
             $scope.regresar = function () {
-                $location.path("#/");
+                $location.path("/");
+            };
+
+            $scope.regresarMis = function () {
+                $location.path("/misquinielas");
             };
 
             $scope.translate = function () {
@@ -61,4 +62,29 @@ angular.module('quiniela.quinielas', ['ngRoute', 'ngResource', 'ngCookies', 'qui
             $scope.selectedLanguage = IDIOMA;
             $scope.translate();
 
-        });
+        })
+        .controller('MisQuinielasCtrl',
+                ['$scope', '$cookies','$window', 'factoryQuinielasService', 'translationService',
+                    function ($scope, $cookies,$window,
+                            factoryQuinielasService, translationService) {
+
+                        if (!$cookies.get('csrftoken')) {
+                            $window.location.href = 'index.html';
+                        }
+
+                        $scope.tablaList = [];
+                        $scope.listadoQuinielas = function () {
+                            factoryQuinielasService.listaQuinielas($cookies.get('csrftoken'))
+                                    .success(function (data) {
+                                        $scope.tablaList = data;
+                                    }).error(function (data) {
+                            });
+                        };
+                        $scope.listadoQuinielas();
+
+                        $scope.translate = function () {
+                            translationService.getTranslation($scope, $scope.selectedLanguage);
+                        };
+                        $scope.selectedLanguage = IDIOMA;
+                        $scope.translate();
+                    }]);

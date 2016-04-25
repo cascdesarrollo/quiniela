@@ -38,6 +38,14 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                     templateUrl: 'pages/quinielas/registrar.html',
                     controller: 'AgregarCtrl'
                 });
+                $routeProvider.when('/misquinielas', {
+                    templateUrl: 'pages/quinielas/usuario/misquinielas.html',
+                    controller: 'MisQuinielasCtrl'
+                });
+                $routeProvider.when('/misquinielas/:id/:alias', {
+                    templateUrl: 'pages/quinielas/usuario/detalle.html',
+                    controller: 'QuinielasCtrl'
+                });
                 $routeProvider.otherwise({redirectTo: '/'});
             }])
         .controller('MainCtrl', function ($scope, $cookies, $window, $location,
@@ -114,7 +122,6 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                             factoryGeneralService.tabla('A')
                                     .success(function (data) {
                                         $scope.tablaList = data;
-                                        console.log($scope.tablaList);
                                     }).error(function (data) {
                             });
                         };

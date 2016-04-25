@@ -39,7 +39,6 @@ angular.module('quiniela.agregar', ['ngRoute', 'ngResource', 'ngCookies', 'agreg
                         .success(function (data) {
                             $scope.process.modal('hide');
                             $scope.objetosList = data;
-                            console.log($scope.objetosList);
                         }).error(function (data) {
                     $scope.process.modal('hide');
                     $scope.consultando = false;
@@ -81,7 +80,6 @@ angular.module('quiniela.agregar', ['ngRoute', 'ngResource', 'ngCookies', 'agreg
                             });
                         }).error(function (data) {
                             $scope.process.modal('hide');
-                            console.log(data);
                     $scope.muestraMensajeError = true;
                     $scope.mensajeError = data.des_error;
                 });
