@@ -50,6 +50,9 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                     templateUrl: 'pages/partidos/resultado.html',
                     controller: 'PartidosCtrl'
                 });
+                $routeProvider.when('/reglas', {
+                    templateUrl: 'pages/reglas.html'
+                });
                 $routeProvider.otherwise({redirectTo: '/'});
             }])
         .controller('MainCtrl', function ($scope, $cookies, $window, $location,
