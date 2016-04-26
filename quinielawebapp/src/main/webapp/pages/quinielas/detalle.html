@@ -17,7 +17,7 @@
         <!-- /.row -->
         <div class="row">
 
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         {{translation.partidospuntos}} 
@@ -30,8 +30,8 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th class="text-center" colspan="2">Equipo 1</th>
-                                        <th class="text-center" colspan="2">Equipo 2</th>
+                                        <th class="text-center" colspan="3">Equipo 1</th>
+                                        <th class="text-center" colspan="3">Equipo 2</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -39,10 +39,12 @@
                                         <th>Fecha</th>
                                         <th>Nombre</th>
                                         <th>Goles </th>
+                                        <th>Resultado</th>
                                         <th>Nombre</th>
                                         <th>Goles </th>
+                                        <th>Resultado</th>
                                         <th>Puntos</th>
-                                        <th>Acumualdo</th>
+                                        <th>Acumulado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,8 +52,10 @@
                                         <td>{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
                                         <td>{{item.idPartido.idEquipo1.equipo}}</td>
                                         <td>{{item.golEquipo1}}</td>
+                                        <td style="color: blue">{{item.idPartido.golEquipo1}}</td>
                                         <td>{{item.idPartido.idEquipo2.equipo}}</td>
                                         <td>{{item.golEquipo2}}</td>
+                                        <td style="color: blue">{{item.idPartido.golEquipo2}}</td>
                                         <td>{{item.puntos}}</td>
                                         <td>{{item.acumulado}}</td>
                                     </tr>

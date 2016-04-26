@@ -5,8 +5,8 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
     'quiniela.registro',
     'quiniela.login',
     'quiniela.agregar',
-    'quiniela.quinielas'
-
+    'quiniela.quinielas',
+    'quiniela.partidos'
 ])
         .constant('config', {
             //
@@ -45,6 +45,10 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                 $routeProvider.when('/misquinielas/:id/:alias', {
                     templateUrl: 'pages/quinielas/usuario/detalle.html',
                     controller: 'QuinielasCtrl'
+                });
+                $routeProvider.when('/partidos', {
+                    templateUrl: 'pages/partidos/resultado.html',
+                    controller: 'PartidosCtrl'
                 });
                 $routeProvider.otherwise({redirectTo: '/'});
             }])
@@ -122,6 +126,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                             factoryGeneralService.tabla('A')
                                     .success(function (data) {
                                         $scope.tablaList = data;
+                                console.log(data);
                                     }).error(function (data) {
                             });
                         };
@@ -177,8 +182,8 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                         $scope.translate();
                     }]);
 var IDIOMA = 'es';
-//var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
-var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
+var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
+//var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
 function uuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
             function (c) {

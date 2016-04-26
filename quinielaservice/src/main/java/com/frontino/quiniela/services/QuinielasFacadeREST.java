@@ -141,7 +141,6 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     @Path("registrar")
     @Consumes("application/json")
     public void registrarQuiniela(
-            @Context HttpServletRequest _request,
             @QueryParam("valida") String _token,
             @QueryParam("alias") String _alias,
             List<MarcadorQuinielas> _detalle

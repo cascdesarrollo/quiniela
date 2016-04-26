@@ -64,6 +64,10 @@ public class Usuarios implements Serializable {
     @Size(max = 30)
     @Column(name = "telefono")
     private String telefono;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "tipo")
+    private Character tipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Collection<Quinielas> quinielasCollection;
 
@@ -128,6 +132,15 @@ public class Usuarios implements Serializable {
         this.telefono = telefono;
     }
 
+    public Character getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Character tipo) {
+        this.tipo = tipo;
+    }
+
+    
     @XmlTransient
     public Collection<Quinielas> getQuinielasCollection() {
         return quinielasCollection;
