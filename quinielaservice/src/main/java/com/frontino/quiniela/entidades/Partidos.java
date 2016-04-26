@@ -58,6 +58,10 @@ public class Partidos implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "status")
+    private Character status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPartido")
     private Collection<MarcadorQuinielas> marcadorQuinielasCollection;
     @JoinColumn(name = "id_equipo1", referencedColumnName = "id")
@@ -115,6 +119,14 @@ public class Partidos implements Serializable {
         this.fecha = fecha;
     }
 
+    public Character getStatus() {
+        return status;
+    }
+
+    public void setStatus(Character status) {
+        this.status = status;
+    }
+    
     @XmlTransient
     public Collection<MarcadorQuinielas> getMarcadorQuinielasCollection() {
         return marcadorQuinielasCollection;

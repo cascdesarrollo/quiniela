@@ -97,12 +97,40 @@
                                         <div class="alert alert-danger" role="alert" ng-show="muestraMensajeError">
                                             {{ mensajeError}}
                                         </div>
-                                        <button ng-click="guardar()" ng-disabled="myForm.$invalid"
+                                        <button ng-click="open()" ng-disabled="myForm.$invalid"
                                                 class="btn btn-primary">Guardar
                                         </button>
                                         <button ng-click="regresar()" 
                                                 class="btn btn-default">Cancelar
                                         </button>
+
+                                        <script type="text/ng-template" id="myModalContent.html">
+                                            <div class="modal-header">
+                                            <h3 class="modal-title">Informaci&oacute;n de reglas de Quiniela
+                                            </h3>
+                                            </div>
+                                            <div class="modal-body">
+                                            <div class="row">
+                                            <div class="col-xs-12">
+                                            <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                            <h4>Reglas</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                            <div class="row">
+                                            <div class="col-sm-12">
+                                            <label>Epae</label>
+                                            </div>
+                                            <div class="col-sm-8 text-right">
+                                            OJO
+                                            </div>
+                                            </div>
+                                            
+                                            <div class="modal-footer">
+                                            <button class="btn btn-primary" type="button" ng-click="ok()">Entiendo</button>
+                                            <button class="btn btn-default" type="button" ng-click="cancel()">Cancelar</button>
+                                            </div>
+                                        </script>
                                     </div>
                                 </div>
                             </div>
@@ -115,48 +143,7 @@
 
 
 
-                <script>
-                            $(document).ready(function () {
-                                $('#dataTables-example').DataTable();
-                            });
 
+                </body>
 
-                            $(document).ready(function () {
-                                $('.datepicker').datepicker({
-                                    format: "dd/mm/yyyy",
-                                    language: "es",
-                                    autoclose: true,
-                                    todayHighlight: true,
-                                    startDate: '+1d'
-                                });
-                            });
-
-
-                            $(function () {
-
-                                $('#dp3').datepicker({
-                                    autoclose: true
-                                });
-
-                                $('.date-picker').datepicker({
-                                    autoclose: true
-                                });
-
-
-                                $('#datetimepicker2').datepicker(
-                                        {
-                                            "setDate": new Date(),
-                                            "autoclose": true
-                                        }
-                                );
-
-
-                            });
-
-
-                </script> 
-        </form>
-
-    </body>
-
-</html>
+                </html>
