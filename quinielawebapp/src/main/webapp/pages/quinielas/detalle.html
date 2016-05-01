@@ -49,7 +49,8 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in tablaList">
-                                        <td>{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
+                                        <td ng-show="item.idPartido.status=='2'" style="color: red" title="Partido Jugado">{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
+                                        <td ng-show="item.idPartido.status=='1'" style="color: green" title="Partido Pendiente por Jugar">{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
                                         <td>{{item.idPartido.idEquipo1.equipo}}</td>
                                         <td>{{item.golEquipo1}}</td>
                                         <td style="color: blue">{{item.idPartido.golEquipo1}}</td>

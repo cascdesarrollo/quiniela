@@ -124,12 +124,37 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                 ['Messages', '$scope', '$cookies', 'factoryGeneralService', 'translationService',
                     function (Messages, $scope, $cookies,
                             factoryGeneralService, translationService) {
+                        $scope.pendientes = 0;
+                        $scope.verificadas = 0;
+                        $scope.primero = 0;
+                        $scope.segundo= 0;
+                        $scope.tercero= 0;
                         $scope.tablaList = [];
+                        $scope.contabilizar = function () {
+                            $scope.pendientes = 0;
+                            $scope.verificadas = 0;
+                            angular.forEach($scope.tablaList, function (quiniela) {
+                                if (quiniela.status === 'P') {
+                                    $scope.pendientes++;
+                                } else if (quiniela.status === 'V') {
+                                    $scope.verificadas++;
+                                }
+                            });
+                            var recaudado=$scope.verificadas*1000;
+                            $scope.primero=(recaudado * (0.4));
+                            $scope.segundo=(recaudado * (0.2));
+                            $scope.tercero=(recaudado * (0.1));
+                        };
                         $scope.listadoPosiciones = function () {
                             factoryGeneralService.tabla('A')
                                     .success(function (data) {
                                         $scope.tablaList = data;
-                                console.log(data);
+                                        console.log(data);
+                                        $scope.contabilizar();
+
+
+
+
                                     }).error(function (data) {
                             });
                         };
@@ -174,10 +199,10 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
 
                         $scope.abajo = function () {
                             var elem = document.getElementById('scrollMensajes');
-                            elem.scrollTop = elem.scrollHeight+150;
+                            elem.scrollTop = elem.scrollHeight + 150;
                         };
                         $scope.abajo();
-                        
+
                         $scope.translate = function () {
                             translationService.getTranslation($scope, $scope.selectedLanguage);
                         };
