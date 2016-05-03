@@ -2,8 +2,8 @@ angular.module('quiniela.registro', ['ngCookies', 'registroServices'])
         .controller('RegistroCtrl', function ($scope, $window, $location, factoryRegistroService,
                 translationService, $cookies) {
 
-            if (!$cookies.get('csrftoken')) {
-               $window.location.href = 'index.html';
+            if ($cookies.get('csrftoken')) {
+                $window.location.href = 'index.html';
             }
 
             $scope.consultando = false;
@@ -34,12 +34,9 @@ angular.module('quiniela.registro', ['ngCookies', 'registroServices'])
                     + '</div>');
 
             $scope.save = function () {
-                
-                $location.path("/login");
-                return;
                 $scope.mensajeError = null;
                 $scope.muestraMensajeError = false;
-                if($scope.password!==$scope.rePassword){
+                if ($scope.password !== $scope.rePassword) {
                     $scope.mensajeError = "Contraseña No Coincide";
                     $scope.muestraMensajeError = true;
                     return;
@@ -48,7 +45,7 @@ angular.module('quiniela.registro', ['ngCookies', 'registroServices'])
                         .success(function (data) {
                             $scope.process.modal('hide');
                             alert('Usuario Registrado exitosamente!');
-                            
+                            $location.path("/login");
                         }).error(function (data) {
                     $scope.process.modal('hide');
                     $scope.mensajeError = 'Error en registro de usuario';

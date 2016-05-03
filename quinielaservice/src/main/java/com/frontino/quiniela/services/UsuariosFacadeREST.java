@@ -42,7 +42,9 @@ public class UsuariosFacadeREST extends AbstractFacade<Usuarios> {
     public void create(Usuarios entity) {
         entity.setPassword(Utilidades.stringToMd5(entity.getPassword()));
         entity.setStatus('P');
+        entity.setTipo('X');
         super.create(entity);
+        System.out.println("Se creo!!!");
     }
     
     @PUT
