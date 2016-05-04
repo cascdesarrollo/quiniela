@@ -120,8 +120,11 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
         _token = _token.substring(sessionID.length() + 1, _token.length());
         try {
             if (autenticador.isAuthTokenValid(sessionID, _token)) {
-                SessionDto usuario = autenticador.getSession(sessionID, _token);
-                List<Partidos> arrPartidos = partidosFacadeREST.findAll();
+                Query q = em.createQuery(new StringBuffer("select p ") //
+                .append(" FROM Partidos p")
+                .append(" ORDER BY p.idGrupo.id, p.fecha")
+                .toString());
+                List<Partidos> arrPartidos = q.getResultList();
                 MarcadorQuinielas marca;
                 for (Partidos partido : arrPartidos) {
                     marca = new MarcadorQuinielas();
