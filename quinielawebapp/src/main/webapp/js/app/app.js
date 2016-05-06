@@ -43,7 +43,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                     controller: 'MisQuinielasCtrl'
                 });
                 $routeProvider.when('/misquinielas/:id/:alias', {
-                    templateUrl: 'pages/quinielas/usuario/detalle.html',
+                    templateUrl: 'pages/quinielas/usuario/editar.html',
                     controller: 'QuinielasCtrl'
                 });
                 $routeProvider.when('/partidos', {

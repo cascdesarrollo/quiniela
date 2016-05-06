@@ -121,9 +121,9 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
         try {
             if (autenticador.isAuthTokenValid(sessionID, _token)) {
                 Query q = em.createQuery(new StringBuffer("select p ") //
-                .append(" FROM Partidos p")
-                .append(" ORDER BY p.idGrupo.id, p.fecha")
-                .toString());
+                        .append(" FROM Partidos p")
+                        .append(" ORDER BY p.idGrupo.id, p.fecha")
+                        .toString());
                 List<Partidos> arrPartidos = q.getResultList();
                 MarcadorQuinielas marca;
                 for (Partidos partido : arrPartidos) {
@@ -266,6 +266,27 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
 
         }
 
+    }
+
+    @POST
+    @Path("editar")
+    @Consumes("application/json")
+    public void editarQuiniela(
+            @QueryParam("valida") String _token,
+            List<MarcadorQuinielas> _detalle
+    ) {
+        Authenticator autenticador = Authenticator.getInstance();
+        String sessionID = _token.split("-")[0];
+        _token = _token.substring(sessionID.length() + 1, _token.length());
+        try {
+            if (autenticador.isAuthTokenValid(sessionID, _token)) {
+                for (MarcadorQuinielas linea : _detalle) {
+                    marcadorQuinielasFacadeREST.edit(linea.getId(), linea);
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

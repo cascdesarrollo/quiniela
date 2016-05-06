@@ -12,6 +12,14 @@ angular.module('quinielasServices', [])
                         method: 'GET',
                         url: QUINIELA + 'quinielas/quinielausuario?valida=' + token
                     });
+                },
+                guardar: function (token, datos) {
+                    return $http({
+                        method: 'POST',
+                        url: QUINIELA + 'quinielas/editar?valida=' + token,
+                        dataType: "json",
+                        data: datos
+                    });
                 }
             };
         })

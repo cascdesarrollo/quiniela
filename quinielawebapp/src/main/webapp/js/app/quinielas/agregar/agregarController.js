@@ -59,23 +59,7 @@ angular.module('quiniela.agregar', ['ngRoute', 'ngResource', 'ngCookies', 'ui.bo
                 var modalInstance = $uibModal.open({
                     animation: $scope.animationsEnabled,
                     templateUrl: 'myModalContent.html',
-                    controller: 'ModalInstanceCtrl',
-                    size: 'lg',
-                    resolve: {
-                        item: function () {
-                            return item;
-                        }
-                    }
-                });
-
-
-            };
-
-            $scope.open = function () {
-                var modalInstance = $uibModal.open({
-                    animation: $scope.animationsEnabled,
-                    templateUrl: 'myModalContent.html',
-                    controller: 'ModalInstanceCtrl',
+                    controller: 'ModalInstanceCtrlA',
                     size: 'lg',
                     resolve: {
                         alias: function () {
@@ -99,7 +83,7 @@ angular.module('quiniela.agregar', ['ngRoute', 'ngResource', 'ngCookies', 'ui.bo
             $scope.translate();
 
         });
-angular.module('quiniela.agregar').controller('ModalInstanceCtrl', function ($scope, $cookies, $window, $uibModalInstance, factoryAgregarService,
+angular.module('quiniela.agregar').controller('ModalInstanceCtrlA', function ($scope, $cookies, $window, $uibModalInstance, factoryAgregarService,
         alias, objetosList) {
     $scope.process = $(
             '<div class="modal fade" id="process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static"  data-keyboard="false" >'
