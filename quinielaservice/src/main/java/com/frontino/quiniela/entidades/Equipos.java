@@ -43,6 +43,9 @@ public class Equipos implements Serializable {
     @Size(max = 25)
     @Column(name = "equipo")
     private String equipo;
+    @Size(max = 2)
+    @Column(name = "siglas")
+    private String siglas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo1")
     private Collection<Partidos> partidosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo2")
@@ -61,6 +64,14 @@ public class Equipos implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getSiglas() {
+        return siglas;
+    }
+
+    public void setSiglas(String siglas) {
+        this.siglas = siglas;
     }
 
     public String getEquipo() {

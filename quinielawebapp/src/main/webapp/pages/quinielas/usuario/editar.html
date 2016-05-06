@@ -71,13 +71,21 @@
                                             <tr ng-repeat="item in tablaList">
                                                 <td>{{item.idPartido.idGrupo.nombre}}</td>
                                                 <td>{{item.idPartido.fecha| date : 'dd/MM/yyyy'}}</td>
-                                                <td>{{item.idPartido.idEquipo1.equipo}}</td>
+                                                <td>
+                                                    <span class="flag-icon flag-icon-{{item.idPartido.idEquipo1.siglas}}">    
+                                                    </span>
+                                                    {{item.idPartido.idEquipo1.equipo}}
+                                                </td>
                                                 <td>
                                                     <input class="form-control col-xs-3" type="number"
                                                            min="0" max="8" step="1"
                                                            ng-model="item.golEquipo1"/>
                                                 </td>
-                                                <td>{{item.idPartido.idEquipo2.equipo}}</td>
+                                                <td>
+                                                    <span class="flag-icon flag-icon-{{item.idPartido.idEquipo2.siglas}}">    
+                                                    </span>
+                                                    {{item.idPartido.idEquipo2.equipo}}
+                                                </td>
                                                 <td>
                                                     <input class="form-control col-xs-3" type="number"
                                                            min="0" max="8" step="1"

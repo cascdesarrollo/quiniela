@@ -210,8 +210,8 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                         $scope.translate();
                     }]);
 var IDIOMA = 'es';
-//var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
-var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
+var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
+//var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
 function uuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
             function (c) {

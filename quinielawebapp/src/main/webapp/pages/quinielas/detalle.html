@@ -49,12 +49,24 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in tablaList">
-                                        <td ng-show="item.idPartido.status=='2'" style="color: red" title="Partido Jugado">{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
-                                        <td ng-show="item.idPartido.status=='1'" style="color: green" title="Partido Pendiente por Jugar">{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
-                                        <td>{{item.idPartido.idEquipo1.equipo}}</td>
+                                        <td ng-show="item.idPartido.status == '2'" style="color: red" title="Partido Jugado">{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
+                                        <td ng-show="item.idPartido.status == '1'" style="color: green" title="Partido Pendiente por Jugar">{{item.idPartido.fecha| date: 'dd/MM/yyyy'}}</td>
+                                        <td >
+                                            <h5>
+                                                
+                                                <span class="flag-icon flag-icon-{{item.idPartido.idEquipo1.siglas}}">    
+                                                </span>
+                                                {{item.idPartido.idEquipo1.equipo}}
+                                            </h5>
+                                            
+                                        </td>
                                         <td>{{item.golEquipo1}}</td>
                                         <td style="color: blue">{{item.idPartido.golEquipo1}}</td>
-                                        <td>{{item.idPartido.idEquipo2.equipo}}</td>
+                                        <td>
+                                            <span class="flag-icon flag-icon-{{item.idPartido.idEquipo2.siglas}}">    
+                                                </span>
+                                                {{item.idPartido.idEquipo2.equipo}}
+                                        </td>
                                         <td>{{item.golEquipo2}}</td>
                                         <td style="color: blue">{{item.idPartido.golEquipo2}}</td>
                                         <td>{{item.puntos}}</td>
