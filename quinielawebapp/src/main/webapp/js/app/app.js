@@ -1,5 +1,5 @@
 angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
-    'chat',
+    //'chat',
     'ngAnimate',
     'generalServices',
     'quiniela.registro',
@@ -8,7 +8,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
     'quiniela.quinielas',
     'quiniela.partidos'
 ])
-        .constant('config', {
+        /*.constant('config', {
             //
             // Get your PubNub API Keys in link below phone demo.
             //
@@ -16,7 +16,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                 "publish-key": "pub-c-b03f67aa-8528-4bef-8789-5cb81800898a",
                 "subscribe-key": "sub-c-a8bf11fe-0b03-11e6-a6c8-0619f8945a4f"
             }
-        })
+        })*/
         .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider.when('/', {
                     templateUrl: 'dashboard.html',
@@ -121,8 +121,12 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
             $scope.translate();
         })
         .controller('DashBoardCtrl',
-                ['Messages', '$scope', '$cookies', 'factoryGeneralService', 'translationService',
-                    function (Messages, $scope, $cookies,
+                [
+                    //'Messages',  era para chat
+                    '$scope', '$cookies', 'factoryGeneralService', 'translationService',
+                    function (
+                            //Messages, era para chat
+                    $scope, $cookies,
                             factoryGeneralService, translationService) {
                         $scope.pendientes = 0;
                         $scope.verificadas = 0;
@@ -175,6 +179,8 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                             }
                         };
                         $scope.validaSesion();
+                        
+                        /* CHAT
                         // Message Inbox
                         $scope.messages = [];
                         // Receive Messages
@@ -202,6 +208,7 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                             elem.scrollTop = elem.scrollHeight + 150;
                         };
                         $scope.abajo();
+                        FIN CHAT */
 
                         $scope.translate = function () {
                             translationService.getTranslation($scope, $scope.selectedLanguage);
