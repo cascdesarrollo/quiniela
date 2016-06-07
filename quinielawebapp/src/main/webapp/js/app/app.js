@@ -9,14 +9,14 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
     'quiniela.partidos'
 ])
         /*.constant('config', {
-            //
-            // Get your PubNub API Keys in link below phone demo.
-            //
-            "pubnub": {
-                "publish-key": "pub-c-b03f67aa-8528-4bef-8789-5cb81800898a",
-                "subscribe-key": "sub-c-a8bf11fe-0b03-11e6-a6c8-0619f8945a4f"
-            }
-        })*/
+         //
+         // Get your PubNub API Keys in link below phone demo.
+         //
+         "pubnub": {
+         "publish-key": "pub-c-b03f67aa-8528-4bef-8789-5cb81800898a",
+         "subscribe-key": "sub-c-a8bf11fe-0b03-11e6-a6c8-0619f8945a4f"
+         }
+         })*/
         .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider.when('/', {
                     templateUrl: 'dashboard.html',
@@ -126,13 +126,13 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                     '$scope', '$cookies', 'factoryGeneralService', 'translationService',
                     function (
                             //Messages, era para chat
-                    $scope, $cookies,
+                            $scope, $cookies,
                             factoryGeneralService, translationService) {
                         $scope.pendientes = 0;
                         $scope.verificadas = 0;
                         $scope.primero = 0;
-                        $scope.segundo= 0;
-                        $scope.tercero= 0;
+                        $scope.segundo = 0;
+                        $scope.tercero = 0;
                         $scope.tablaList = [];
                         $scope.contabilizar = function () {
                             $scope.pendientes = 0;
@@ -144,21 +144,16 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                                     $scope.verificadas++;
                                 }
                             });
-                            var recaudado=$scope.verificadas*1000;
-                            $scope.primero=(recaudado * (0.4));
-                            $scope.segundo=(recaudado * (0.2));
-                            $scope.tercero=(recaudado * (0.1));
+                            var recaudado = $scope.verificadas * 1000;
+                            $scope.primero = (recaudado * (0.4));
+                            $scope.segundo = (recaudado * (0.2));
+                            $scope.tercero = (recaudado * (0.1));
                         };
                         $scope.listadoPosiciones = function () {
                             factoryGeneralService.tabla('A')
                                     .success(function (data) {
                                         $scope.tablaList = data;
-                                        console.log(data);
                                         $scope.contabilizar();
-
-
-
-
                                     }).error(function (data) {
                             });
                         };
@@ -179,36 +174,41 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                             }
                         };
                         $scope.validaSesion();
-                        
+
+                        $scope.mensajePrivacidad = function () {
+                            bootbox.alert("Por privacidad, los resultados de quinielas de otras personas solo podran verse a partir del dia de inicio de la copa", function () {
+                            });
+                        };
+
                         /* CHAT
-                        // Message Inbox
-                        $scope.messages = [];
-                        // Receive Messages
-                        Messages.receive(function (message) {
-                            $scope.messages.push(message);
-                        });
-                        // Send Messages
-                        $scope.send = function () {
-                            if ($scope.textbox !== '') {
-                                Messages.send({data: $scope.textbox});
-                                $scope.textbox = '';
-                                $scope.abajo();
-                            }
-                        };
-
-                        $scope.checkIfEnterKeyWasPressed = function ($event) {
-                            var keyCode = $event.which || $event.keyCode;
-                            if (keyCode === 13) {
-                                $scope.send();
-                            }
-                        };
-
-                        $scope.abajo = function () {
-                            var elem = document.getElementById('scrollMensajes');
-                            elem.scrollTop = elem.scrollHeight + 150;
-                        };
-                        $scope.abajo();
-                        FIN CHAT */
+                         // Message Inbox
+                         $scope.messages = [];
+                         // Receive Messages
+                         Messages.receive(function (message) {
+                         $scope.messages.push(message);
+                         });
+                         // Send Messages
+                         $scope.send = function () {
+                         if ($scope.textbox !== '') {
+                         Messages.send({data: $scope.textbox});
+                         $scope.textbox = '';
+                         $scope.abajo();
+                         }
+                         };
+                         
+                         $scope.checkIfEnterKeyWasPressed = function ($event) {
+                         var keyCode = $event.which || $event.keyCode;
+                         if (keyCode === 13) {
+                         $scope.send();
+                         }
+                         };
+                         
+                         $scope.abajo = function () {
+                         var elem = document.getElementById('scrollMensajes');
+                         elem.scrollTop = elem.scrollHeight + 150;
+                         };
+                         $scope.abajo();
+                         FIN CHAT */
 
                         $scope.translate = function () {
                             translationService.getTranslation($scope, $scope.selectedLanguage);
@@ -217,8 +217,8 @@ angular.module('quiniela', ['ngRoute', 'ngResource', 'ngCookies',
                         $scope.translate();
                     }]);
 var IDIOMA = 'es';
-//var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
-var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
+var QUINIELA = 'http://localhost:8080/quinielaservice/webresources/';
+//var QUINIELA = 'http://54.214.255.80:9090/quinielaservice/webresources/';
 function uuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
             function (c) {

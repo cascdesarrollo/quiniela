@@ -109,7 +109,10 @@
                                             </button>
                                         </td>
                                         <td>
-                                            <a href="#/{{item.id}}/{{item.alias}}"   class="btn btn-primary btn-circle">
+                                            <!--<a href="#/{{item.id}}/{{item.alias}}"   class="btn btn-primary btn-circle">
+                                                <i class="fa fa-list"></i>
+                                            </a>-->
+                                            <a ng-click="mensajePrivacidad()"  class="btn btn-primary btn-circle">
                                                 <i class="fa fa-list"></i>
                                             </a>
                                         </td>
@@ -124,109 +127,135 @@
 
             <div class="col-lg-4" ng-hide="logeado">
                 <div class="col-lg-12">
+                    <div class="panel-success text-center">
+                        <div class="panel-heading">
+                            <h2>
+                                Gracias por participar!!!!
+                                <br>
+                                <i class="fa fa-soccer-ball-o"></i>
+                                <i class="fa fa-soccer-ball-o"></i>
+                                <i class="fa fa-soccer-ball-o"></i>
+                                <i class="fa fa-soccer-ball-o"></i>
+                                <i class="fa fa-soccer-ball-o"></i>
+                            </h2>
+                            <h3>
+                                Total Participantes {{(verificadas + pendientes) | number:2}}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="panel-yellow">
+                        <div class="panel-heading text-center">
+                            <h4>
+                                <i class="fa fa-trophy"></i>
+                                Total 1er Lugar 25.000,00
+                            </h4>
+                            <h4>
+                                <i class="fa fa-trophy"></i>
+                                Total 2do Lugar 10.000,00
+                            </h4>
+                            <h4>
+                                <i class="fa fa-trophy"></i>
+                                Total 2do Lugar 5.000,00
+                            </h4>
+
+                        </div>
+                    </div>
                     <div class="panel-primary">
                         <div class="panel-heading">
-                            Status de Quinielas Registradas
+                            <h1 class="text-center">
+                                <i class="fa fa-soccer-ball-o"></i>
+                                ¡¡Suerte!!
+                                <i class="fa fa-soccer-ball-o"></i>
+                            </h1>
+                            
+
                         </div>
-
-                        <table>
-                            <tr>
-                                <td>
-                                    <label>{{verificadas| number:2}} Quinielas Verificadas</label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>{{pendientes| number:2}} Quinielas Pendientes por Aprobaci&oacute;n</label>
-                                </td>
-
-                            </tr>
-                        </table>
                     </div>
-                </div>
-                <div class="col-lg-12">
-                    <a href="#/login" class="form-control btn btn-success "
-                       title="Registrese en nuestra pagina para que pueda ingresar sus quinielas">
-                        Iniciar Sesi&oacute;n
-                    </a>
-                </div>
-                <div class="col-lg-12">
-                    &ensp;
-                </div>
-                <div class="col-lg-12">
-                    <a href="#/registro" class="form-control  btn btn-info "
-                       title="Registrese en nuestra pagina para que pueda ingresar sus quinielas">
-                        Registrar Usuario
-                    </a>
                 </div>
             </div>
-            <div class="col-lg-4" ng-show="logeado">
-                <div class="col-lg-12">
-                    <div class="panel-primary">
-                        <div class="panel-heading">
-                            Status de Quinielas Registradas
-                        </div>
-
-                        <table>
-                            <tr>
-                                <td>
-                                    <label>{{verificadas| number:2}} Quinielas Verificadas</label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>{{pendientes| number:2}} Quinielas Pendientes por Aprobaci&oacute;n</label>
-                                </td>
-
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <br>
-                    
-                    <a href="#/agregar" class="form-control  btn btn-danger"
-                       title="Registrese en nuestra pagina para que pueda ingresar sus quinielas">
-                        Registrar Nueva Quiniela</a>
-                </div>
-                <!--
-                
-                <div class="panel-body" style="overflow-y: scroll; height: 350px;" id="scrollMensajes">
-                    <ul class="chat" >
-                        <div ng-repeat="message in messages" >
-
-                            <li class="right clearfix">
-                                <div class="chat-body clearfix">
-                                    <div class="header">
-                                        <strong class="pull-left primary-font"> {{ message.user.name}}</strong>
-                                    </div>
-                                    <br>
-                                    <p>
-                                        {{ message.data}}
-                                    </p>
-                                </div>
-                            </li>
-                        </div>
-                    </ul>
-                </div>
-                <div class="panel-footer">
-                    <div class="input-group">
-                        <input ng-model="textbox" class="form-control" placeholder="Ingresar tu mensaje..."
-                               ng-keypress="checkIfEnterKeyWasPressed($event)">
-                        <span class="input-group-btn">
-                            <button type="submit" ng-click="send()"
-                                    class="btn btn-warning btn-sm" id="btn-chat">
-                                Enviar
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                -->
+            <!--<div class="col-lg-12">
+                <a href="#/login" class="form-control btn btn-success "
+                   title="Registrese en nuestra pagina para que pueda ingresar sus quinielas">
+                    Iniciar Sesi&oacute;n
+                </a>
+            </div>-->
+            <!--<div class="col-lg-12">
+                &ensp;
             </div>
-
-
+            <div class="col-lg-12">
+                <a href="#/registro" class="form-control  btn btn-info "
+                   title="Registrese en nuestra pagina para que pueda ingresar sus quinielas">
+                    Registrar Usuario
+                </a>
+            </div>
+            -->
         </div>
+        <div class="col-lg-4" ng-show="logeado">
+            <div class="col-lg-12">
+                <div class="panel-primary">
+                    <div class="panel-heading">
+                        Status de Quinielas Registradas
+                    </div>
+
+                    <table>
+                        <tr>
+                            <td>
+                                <label>{{verificadas| number:2}} Quinielas Verificadas</label>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>{{pendientes| number:2}} Quinielas Pendientes por Aprobaci&oacute;n</label>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <br>
+
+                <a href="#/agregar" class="form-control  btn btn-danger"
+                   title="Registrese en nuestra pagina para que pueda ingresar sus quinielas">
+                    Registrar Nueva Quiniela</a>
+            </div>
+            <!--
+            
+            <div class="panel-body" style="overflow-y: scroll; height: 350px;" id="scrollMensajes">
+                <ul class="chat" >
+                    <div ng-repeat="message in messages" >
+
+                        <li class="right clearfix">
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="pull-left primary-font"> {{ message.user.name}}</strong>
+                                </div>
+                                <br>
+                                <p>
+                                    {{ message.data}}
+                                </p>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <div class="input-group">
+                    <input ng-model="textbox" class="form-control" placeholder="Ingresar tu mensaje..."
+                           ng-keypress="checkIfEnterKeyWasPressed($event)">
+                    <span class="input-group-btn">
+                        <button type="submit" ng-click="send()"
+                                class="btn btn-warning btn-sm" id="btn-chat">
+                            Enviar
+                        </button>
+                    </span>
+                </div>
+            </div>
+            -->
+        </div>
+
+
     </div>
+</div>
 </html>

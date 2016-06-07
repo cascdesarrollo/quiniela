@@ -143,11 +143,17 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     @POST
     @Path("registrar")
     @Consumes("application/json")
-    public void registrarQuiniela(
+    public Response registrarQuiniela(
             @QueryParam("valida") String _token,
             @QueryParam("alias") String _alias,
             List<MarcadorQuinielas> _detalle
     ) {
+        JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+            jsonObjBuilder.add("error", true);
+            jsonObjBuilder.add("des_error", "Lo Siento Ya comenzo la copa");
+            JsonObject jsonObj = jsonObjBuilder.build();
+            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+            /*
         Authenticator autenticador = Authenticator.getInstance();
         String sessionID = _token.split("-")[0];
         _token = _token.substring(sessionID.length() + 1, _token.length());
@@ -169,8 +175,18 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
                 super.create(quiniela);
             }
         } catch (Exception ex) {
-            Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+            jsonObjBuilder.add("error", true);
+            jsonObjBuilder.add("des_error", "Error Validando Alias " + ex.getMessage());
+            JsonObject jsonObj = jsonObjBuilder.build();
+            return getNoCacheResponseBuilder(Response.Status.CONFLICT).entity(jsonObj.toString()).build();
         }
+        //autenticador.logout(null, null);
+        JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+        jsonObjBuilder.add("message", "registrar");
+        JsonObject jsonObj = jsonObjBuilder.build();
+        return getNoCacheResponseBuilder(Response.Status.ACCEPTED).entity(jsonObj.toString()).build();
+            */
     }
 
     @Override
@@ -271,10 +287,16 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
     @POST
     @Path("editar")
     @Consumes("application/json")
-    public void editarQuiniela(
+    public Response editarQuiniela(
             @QueryParam("valida") String _token,
             List<MarcadorQuinielas> _detalle
     ) {
+        JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+            jsonObjBuilder.add("error", true);
+            jsonObjBuilder.add("des_error", "Ya comenzo la copa");
+            JsonObject jsonObj = jsonObjBuilder.build();
+            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+        /*
         Authenticator autenticador = Authenticator.getInstance();
         String sessionID = _token.split("-")[0];
         _token = _token.substring(sessionID.length() + 1, _token.length());
@@ -285,8 +307,19 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(QuinielasFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+            jsonObjBuilder.add("error", true);
+            jsonObjBuilder.add("des_error", "Error Validando Alias " + ex.getMessage());
+            JsonObject jsonObj = jsonObjBuilder.build();
+            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
         }
+        //autenticador.logout(null, null);
+        JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+        jsonObjBuilder.add("message", "Executed demoPostMethod");
+        JsonObject jsonObj = jsonObjBuilder.build();
+
+        return getNoCacheResponseBuilder(Response.Status.ACCEPTED).entity(jsonObj.toString()).build();
+                */
     }
 
 }

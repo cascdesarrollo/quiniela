@@ -10,6 +10,7 @@ import com.frontino.quiniela.logica.Utilidades;
 import com.frontino.quiniela.logica.seguridad.Authenticator;
 import com.frontino.quiniela.logica.seguridad.SessionDto;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -39,6 +40,8 @@ import javax.ws.rs.core.Response;
 @Path("partidos")
 public class PartidosFacadeREST extends AbstractFacade<Partidos> {
 
+    @EJB
+    private UsuariosFacadeREST usuariosFacadeREST;
     @PersistenceContext(unitName = "com.frontino_quinielaservice_war_1.0PU")
     private EntityManager em;
 
@@ -167,6 +170,91 @@ public class PartidosFacadeREST extends AbstractFacade<Partidos> {
         cc.setMustRevalidate(true);
 
         return Response.status(status).cacheControl(cc);
+    }
+
+    @GET
+    @Path("partiospendientes")
+    @Produces({"application/xml", "application/json"})
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public List<Partidos> consultarPartidos() {
+        Authenticator autenticador = Authenticator.getInstance();
+        try {
+            Query q = em.createQuery(new StringBuffer("select p ") //
+                    .append(" from Partidos p")
+                    .append(" WHERE p.status='1'")
+                    .append(" ORDER BY p.fecha, p.id")
+                    .toString()
+            );
+            return q.getResultList();
+        } catch (final Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        } finally {
+
+        }
+    }
+
+    @POST
+    @Path("actualizarpendientes")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response actualizar(
+            @FormParam("username") String username,
+            @FormParam("password") String password,
+            @FormParam("id") int id,
+            @FormParam("equipo1") int equipo1,
+            @FormParam("equipo2") int equipo2) {
+        Authenticator autenticador = Authenticator.getInstance();
+        try {
+            String sessionID = username;
+            com.frontino.quiniela.entidades.Usuarios usuario = usuariosFacadeREST.consultarUsuario(username, Utilidades.stringToMd5(password));
+            String authToken = autenticador.login(sessionID, usuario);
+            if (authToken == null) {
+                JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+                jsonObjBuilder.add("error", true);
+                jsonObjBuilder.add("des_error", "Usuario o Contraseña Ivalida");
+                JsonObject jsonObj = jsonObjBuilder.build();
+                return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+            }
+            SessionDto datausuario = autenticador.getSession(sessionID, authToken);
+            if (datausuario != null) {
+                if (datausuario.getUsuario().getEmail().equals(username)
+                        && datausuario.getUsuario().getPassword().equals(Utilidades.stringToMd5(password))
+                        && datausuario.getUsuario().getTipo() == 'Z') {
+                    Partidos partido = super.find(id);
+                    if (partido != null) {
+                        partido.setGolEquipo1(equipo1);
+                        partido.setGolEquipo2(equipo2);
+                        partido.setStatus('2');
+                        super.edit(partido);
+                    }
+                } else {
+                    JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+                    jsonObjBuilder.add("error", true);
+                    jsonObjBuilder.add("des_error", "Error Validando Credenciales");
+                    JsonObject jsonObj = jsonObjBuilder.build();
+                    return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+                }
+            } else {
+                JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+                jsonObjBuilder.add("error", true);
+                jsonObjBuilder.add("des_error", "Error Consultado Identificador de Partido");
+                JsonObject jsonObj = jsonObjBuilder.build();
+                return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+            }
+            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+            jsonObjBuilder.add("exito", "exito");
+            JsonObject jsonObj = jsonObjBuilder.build();
+            return getNoCacheResponseBuilder(Response.Status.OK).entity(jsonObj.toString())
+                    .build();
+        } catch (final Exception ex) {
+            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+            jsonObjBuilder.add("error", true);
+            jsonObjBuilder.add("des_error", "Error Validando crenciales " + ex.getMessage());
+            JsonObject jsonObj = jsonObjBuilder.build();
+            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+        } finally {
+
+        }
     }
 
 }

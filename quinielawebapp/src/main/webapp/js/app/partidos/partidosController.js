@@ -1,9 +1,9 @@
 angular.module('quiniela.partidos', ['ngRoute', 'ngResource', 'ngCookies', 'partidosServices'])
         .controller('PartidosCtrl', function ($scope, $cookies, $location, $window, factoryPartidosService, translationService) {
 
-            if (!$cookies.get('csrftoken')) {
+            /*if (!$cookies.get('csrftoken')) {
                 $window.location.href = 'index.html';
-            }
+            }*/
 
             $scope.mensajeError = null;
             $scope.muestraMensajeError = false;

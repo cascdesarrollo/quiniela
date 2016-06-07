@@ -4,13 +4,13 @@ angular.module('partidosServices', [])
                 partidos: function (token) {
                     return $http({
                         method: 'GET',
-                        url: QUINIELA + 'partidos/pendientes?valida=' + token
+                        url: QUINIELA + 'partidos/partiospendientes'
                     });
                 },
                 guardar: function (token, username, password, id, equipo1, equipo2) {
                     return $http({
                         method: 'POST',
-                        url: QUINIELA + 'partidos/actualizar?valida=' + token,
+                        url: QUINIELA + 'partidos/actualizarpendientes',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
