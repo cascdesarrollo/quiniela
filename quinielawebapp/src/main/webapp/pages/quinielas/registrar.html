@@ -19,7 +19,6 @@
 
 
         <form name="myForm">
-
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
@@ -74,13 +73,21 @@
                                             <tr ng-repeat="item in objetosList">
                                                 <td>{{item.idPartido.idGrupo.nombre}}</td>
                                                 <td>{{item.idPartido.fecha| date : 'dd/MM/yyyy'}}</td>
-                                                <td>{{item.idPartido.idEquipo1.equipo}}</td>
                                                 <td>
+                                                    <span class="flag-icon flag-icon-{{item.idPartido.idEquipo1.siglas}}">    
+                                                    </span>
+                                                    {{item.idPartido.idEquipo1.equipo}}</td>
+                                                <td>
+
+
                                                     <input class="form-control col-xs-3" type="number"
                                                            min="0" max="8" step="1"
                                                            ng-model="item.golEquipo1"/>
                                                 </td>
-                                                <td>{{item.idPartido.idEquipo2.equipo}}</td>
+                                                <td>
+                                                    <span class="flag-icon flag-icon-{{item.idPartido.idEquipo2.siglas}}">    
+                                                    </span>
+                                                    {{item.idPartido.idEquipo2.equipo}}</td>
                                                 <td>
                                                     <input class="form-control col-xs-3" type="number"
                                                            min="0" max="8" step="1"
@@ -119,37 +126,37 @@
                                             <div class="panel-body">
                                             <div class="row">
                                             <div class="col-sm-12">
-                                            
+
                                             <p>- Las quinielas que esten registradas y no hayan sido canceladas antes del dia 03/06/2016 
-                        se eliminar&aacute;n</p>
-                    <p>- Al acertar marcador extacto se acumulan 3 puntos</p>
-                    <p>- Al acertar solo ganador o empate sin marcador exacto se acumula 1 punto</p>
-                    <p>- Se dar&aacute;n premios a 
-                        <br>
-                        1er Lugar 40% de lo Recaudado
-                        <br>
-                        2do Lugar 20% de lo Recaudado
-                        <br>
-                        3er Lugar 10% de lo Recaudado
-                    </p>
-                    <p>- El total recaudado real sera el que aparezca el d&iacute;a de inicio de la copa
-                        <br>
-                        Esto se debe a que el d&iacute;a anterior al inicio de la copa se realizara la eliminaci&oacute;n de las quinielas no canceladas
-                    </p>
-                    <p>- De existir empates en cualquiera de los 3 primeros puestos con el mismo puntaje el % correspondiente se dividir&aacute; entre los participantes con ese puntaje</p>
-                    <h3>
-                        Para Confirmar registro y cancelaci&oacute;n de las quiniela comunicarse a:
-                        <br>
-                        0414-0781191 Enrique Lopez   
-                        <br>
-                        0414-7051536 Carlos Suarez
-                    </h3>
-                                    
-                                    
+                                            se eliminar&aacute;n</p>
+                                            <p>- Al acertar marcador extacto se acumulan 3 puntos</p>
+                                            <p>- Al acertar solo ganador o empate sin marcador exacto se acumula 1 punto</p>
+                                            <p>- Se dar&aacute;n premios a 
+                                            <br>
+                                            1er Lugar 40% de lo Recaudado
+                                            <br>
+                                            2do Lugar 20% de lo Recaudado
+                                            <br>
+                                            3er Lugar 10% de lo Recaudado
+                                            </p>
+                                            <p>- El total recaudado real sera el que aparezca el d&iacute;a de inicio de la copa
+                                            <br>
+                                            Esto se debe a que el d&iacute;a anterior al inicio de la copa se realizara la eliminaci&oacute;n de las quinielas no canceladas
+                                            </p>
+                                            <p>- De existir empates en cualquiera de los 3 primeros puestos con el mismo puntaje el % correspondiente se dividir&aacute; entre los participantes con ese puntaje</p>
+                                            <h3>
+                                            Para Confirmar registro y cancelaci&oacute;n de las quiniela comunicarse a:
+                                            <br>
+                                            0414-0781191 Enrique Lopez   
+                                            <br>
+                                            0414-7051536 Carlos Suarez
+                                            </h3>
+
+
                                             </div>
-                                            
+
                                             </div>
-                                            
+
                                             <div class="modal-footer">
                                             <button class="btn btn-primary" type="button" ng-click="ok()">Entiendo</button>
                                             <button class="btn btn-default" type="button" ng-click="cancel()">Cancelar</button>
@@ -166,8 +173,9 @@
                 <!-- /#page-wrapper -->
 
 
+            </div>
+        </form>
 
+    </body>
 
-                </body>
-
-                </html>
+</html>

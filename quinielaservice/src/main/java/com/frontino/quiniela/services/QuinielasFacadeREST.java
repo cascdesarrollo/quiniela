@@ -148,12 +148,14 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
             @QueryParam("alias") String _alias,
             List<MarcadorQuinielas> _detalle
     ) {
+
+        /*
         JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-            jsonObjBuilder.add("error", true);
-            jsonObjBuilder.add("des_error", "Lo Siento Ya comenzo la copa");
-            JsonObject jsonObj = jsonObjBuilder.build();
-            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
-            /*
+        jsonObjBuilder.add("error", true);
+        jsonObjBuilder.add("des_error", "Ya comenzo la copa");
+        JsonObject jsonObj = jsonObjBuilder.build();
+        return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
+        */
         Authenticator autenticador = Authenticator.getInstance();
         String sessionID = _token.split("-")[0];
         _token = _token.substring(sessionID.length() + 1, _token.length());
@@ -186,7 +188,7 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
         jsonObjBuilder.add("message", "registrar");
         JsonObject jsonObj = jsonObjBuilder.build();
         return getNoCacheResponseBuilder(Response.Status.ACCEPTED).entity(jsonObj.toString()).build();
-            */
+
     }
 
     @Override
@@ -291,12 +293,12 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
             @QueryParam("valida") String _token,
             List<MarcadorQuinielas> _detalle
     ) {
-        JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-            jsonObjBuilder.add("error", true);
-            jsonObjBuilder.add("des_error", "Ya comenzo la copa");
-            JsonObject jsonObj = jsonObjBuilder.build();
-            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();
-        /*
+        /*JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+        jsonObjBuilder.add("error", true);
+        jsonObjBuilder.add("des_error", "Ya comenzo la copa");
+        JsonObject jsonObj = jsonObjBuilder.build();
+        return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity(jsonObj.toString()).build();*/
+        
         Authenticator autenticador = Authenticator.getInstance();
         String sessionID = _token.split("-")[0];
         _token = _token.substring(sessionID.length() + 1, _token.length());
@@ -317,9 +319,7 @@ public class QuinielasFacadeREST extends AbstractFacade<Quinielas> {
         JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
         jsonObjBuilder.add("message", "Executed demoPostMethod");
         JsonObject jsonObj = jsonObjBuilder.build();
-
         return getNoCacheResponseBuilder(Response.Status.ACCEPTED).entity(jsonObj.toString()).build();
-                */
     }
 
 }
