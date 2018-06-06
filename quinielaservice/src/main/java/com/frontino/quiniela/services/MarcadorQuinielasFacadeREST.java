@@ -74,7 +74,7 @@ public class MarcadorQuinielasFacadeREST extends AbstractFacade<MarcadorQuiniela
         Query q = em.createQuery(new StringBuffer("select p ") //
                 .append(" from MarcadorQuinielas p") //
                 .append(" where p.idQuiniela.id=?1")
-                .append(" ORDER by p.idPartido.fecha, p.idPartido.idGrupo.id")
+                .append(" ORDER by p.idPartido.fecha, p.idPartido.idGrupo.id, p.idPartido.id")
                 .toString());
         q.setParameter(1, _id);
         return q.getResultList();
